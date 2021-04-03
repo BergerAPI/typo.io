@@ -1,7 +1,12 @@
-import '../styles/globals.css'
+import '../styles/global/globals.css'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+/**
+ * The main method 😍
+ */
+function Typo({ Component, pageProps }) {
+    return (
+        <Component {...pageProps}/>
+    )
 }
 
-export default MyApp
+export default Typo
