@@ -1,0 +1,14 @@
+.product {
+    color: #f1c40f;
+    text-decoration: underline;
+}
+
+.product:hover {
+    cursor: pointer;
+}
+
+p {
+    line-height: 30px ;
+    margin-top: 0 ;
+    margin-bottom: 0 ;
+  }
