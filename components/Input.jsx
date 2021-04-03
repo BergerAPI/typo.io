@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import styles from "../styles/components/Input.module.css";
 
@@ -53,19 +54,19 @@ export class Input extends React.Component {
         this.state.remainingText.length
       );
       this.setState({ index: this.state.index + 1 });
-    } else this.state.errorCount += 1;
+    } else this.setState({errorCount: this.state.errorCount + 1});
 
-    if(this.state.index + 1 > this.state.fullText.length)
-        this.handleFinish()
+    if (this.state.index + 1 > this.state.fullText.length) this.handleFinish();
   }
 
   handleFinish() {
-    alert("finished");
+    window.location.reload();
   }
 
   render() {
     return (
       <div>
+        <p>{this.state.errorCount}</p>
         <p>
           <a className={styles.typed}>{this.state.typedText}</a>
           <a className={styles.remaining}>{this.state.remainingText}</a>

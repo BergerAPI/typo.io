@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
 
       <main className={styles.main}>
-        <Input text="In der Wut verliert der Mensch seine Intelligenz.">
+        <Input text="Murder with care.">
         </Input>
       </main>
 
