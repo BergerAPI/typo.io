@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import styles from "./Button.module.css";
+import styles from "../styles/components/Button.module.css";
 
 export class Button extends React.Component {
   constructor(props) {

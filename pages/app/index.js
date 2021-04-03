@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { Navbar } from '../../components/Navbar.jsx'
+import { Input } from '../../components/Input.jsx'
 import styles from '../../styles/modules/App.module.css'
 
 export default function Home() {
@@ -14,7 +15,8 @@ export default function Home() {
       <Navbar />
 
       <main className={styles.main}>
-        
+        <Input text="Peu has got the achievment “GG“">
+        </Input>
       </main>
 
       <footer className={styles.footer}>
