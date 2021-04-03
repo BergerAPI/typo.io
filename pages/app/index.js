@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
 
       <main className={styles.main}>
-        <Input text="Peu has got the achievment “GG“">
+        <Input text="In der Wut verliert der Mensch seine Intelligenz.">
         </Input>
       </main>
 

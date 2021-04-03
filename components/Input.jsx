@@ -11,12 +11,21 @@ export class Input extends React.Component {
       remainingText: this.props.text,
       fullText: this.props.text,
       errorCount: 0,
-      validLetters: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW.?!;:,' ",
+      validLetters: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW.?!;:," ',
     };
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", this.onKeyPressed.bind(this), false);
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (this.state.validLetters.includes(event.key))
+          this.handleValidInput(event);
+        else if (event.keyCode == 8 && this.state.index > 0)
+          this.handleBackspace();
+      },
+      false
+    );
 
     String.prototype.removeCharAt = function (i) {
       var tmp = this.split("");
@@ -25,40 +34,33 @@ export class Input extends React.Component {
     };
   }
 
-  onKeyPressed(e) {
-    if (this.state.index >= this.state.fullText.length) {
-      alert("finished");
-    } else {
-      if (this.state.validLetters.includes(e.key)) {
-        if (e.key === this.state.fullText[this.state.index]) {
-          this.state.typedText += this.state.fullText[this.state.index];
+  handleBackspace() {
+    this.setState({
+      remainingText:
+        this.state.fullText[this.state.index - 1] + this.state.remainingText,
+    });
+    this.setState({ index: (this.state.index -= 1) });
+    this.setState({
+      typedText: this.state.typedText.removeCharAt(this.state.typedText.length),
+    });
+  }
 
-          console.log("samuel!!");
-        } else {
-          this.state.errorCount += 1;
-          this.state.typedText += e.key;
-        }
+  handleValidInput(event) {
+    if (event.key === this.state.fullText[this.state.index]) {
+      this.state.typedText += this.state.fullText[this.state.index];
+      this.state.remainingText = this.state.remainingText.slice(
+        1,
+        this.state.remainingText.length
+      );
+      this.setState({ index: this.state.index + 1 });
+    } else this.state.errorCount += 1;
 
-        this.state.remainingText = this.state.remainingText.slice(
-          1,
-          this.state.remainingText.length
-        );
-        this.setState({ index: this.state.index + 1 });
-      } else {
-        if (e.keyCode == 8 && this.state.index > 0) {
-          this.setState({
-            remainingText:
-              this.state.fullText[this.state.index - 1] + this.state.remainingText,
-          });
-          this.setState({ index: (this.state.index -= 1) });
-          this.setState({
-            typedText: this.state.typedText.removeCharAt(
-              this.state.typedText.length
-            ),
-          });
-        }
-      }
-    }
+    if(this.state.index + 1 > this.state.fullText.length)
+        this.handleFinish()
+  }
+
+  handleFinish() {
+    alert("finished");
   }
 
   render() {
