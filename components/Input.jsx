@@ -66,7 +66,7 @@ export class Input extends React.Component {
   render() {
     return (
       <div>
-        <p>{this.state.errorCount}</p>
+        <p>Errors: {this.state.errorCount}</p>
         <p>
           <a className={styles.typed}>{this.state.typedText}</a>
           <a className={styles.remaining}>{this.state.remainingText}</a>

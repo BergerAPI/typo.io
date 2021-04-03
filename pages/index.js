@@ -20,10 +20,10 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Get started typing your a** off 😅
+          Get started typing your a** off
         </p>
 
-        <Button text="start now 😍" href="/app" />
+        <Button text="start now" href="/app" />
       </main>
 
       <footer className={styles.footer}>

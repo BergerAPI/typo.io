@@ -26,7 +26,7 @@ export class Navbar extends React.Component {
               <a className={navStyle.link}>Changelog</a>
             </Link>
             <Link href="/app">
-              <a className={navStyle.button}>Play now 🥳</a>
+              <a className={navStyle.button}>Play now</a>
             </Link>
           </div>
         </div>
