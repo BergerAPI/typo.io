@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import navStyle from "../styles/components/Navbar.css";
+import navStyle from "./Navbar.css";
 
 export class Navbar extends React.Component {
   render() {
