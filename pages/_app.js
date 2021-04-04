@@ -1,11 +1,14 @@
 import '../styles/global/globals.css'
+import BaseLayout from "../components/layout/Base-Layout"
 
 /**
  * The main method 😍
  */
 function Typo({ Component, pageProps }) {
     return (
-        <Component {...pageProps}/>
+        <BaseLayout>
+            <Component {...pageProps} />
+        </BaseLayout>
     )
 }
 

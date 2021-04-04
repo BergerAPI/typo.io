@@ -11,12 +11,27 @@
 }
 
 .author {
-    color: rgba(128, 128, 128, 10);
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 2px;
+  color: rgba(128, 128, 128, 10);
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0;
 }
 
 .information {
-    margin-bottom: 2px;
+  max-width: 500px;
+  overflow: hidden;
+}
+
+.information p {
+  margin: 0;
+  border-radius: 5px;
+  padding: 2px;
+  font-size: 0.9rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.timeElapsed {
+  padding-left: 1px;
+  padding-right: 1px;
 }
