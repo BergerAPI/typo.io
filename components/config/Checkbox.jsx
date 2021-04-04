@@ -40,7 +40,7 @@ export class Checkbox extends React.Component {
             }
             onClick={() => {
               this.setState({ activated: "true" });
-              localStorage.setItem(this.state.item, "true");
+              localStorage.setItem(this.props.item, "true");
             }}
           >
             Activate
