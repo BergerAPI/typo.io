@@ -35,7 +35,7 @@ function randomNumber(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const dataPath = path.join(process.cwd(), '/public/data/quotes.json')
   const data = await fs.readFile(dataPath, 'utf8')
   const jsonObject = JSON.parse(data);
