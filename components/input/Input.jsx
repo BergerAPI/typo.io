@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/components/Input.module.css";
+import styles from "../../styles/components/Input.module.css";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -19,7 +19,12 @@ export class Input extends React.Component {
       wpm: 0.0,
       lastSoundIndex: 0,
       sounds: [],
+      words: [],
     };
+
+    this.state.fullText.split(" ").forEach((element) => {
+      this.state.words.push(element);
+    });
   }
 
   startTimer() {
@@ -35,7 +40,15 @@ export class Input extends React.Component {
   }
 
   componentDidMount() {
-    for (let i = 1; i < 7; i++) {
+    console.log("Component mounted.");
+    console.log(
+      'Received Text: "' +
+        this.state.fullText +
+        '" by/from "' +
+        this.state.author +
+        '"'
+    );
+    for (let i = 1; i < 6; i++) {
       this.state.sounds.push(new Audio("/sound/click/click_" + i + ".wav"));
       console.log('Preloaded audio file: "/sound/click/click_' + i + '.wav"');
     }
@@ -75,8 +88,7 @@ export class Input extends React.Component {
     if (event.key === this.state.fullText[this.state.index]) {
       if (this.state.index == 0) this.startTimer();
 
-      this.state.sounds[this.state.lastSoundIndex].currentTime = 0;
-      //this.state.sounds[this.state.lastSoundIndex].play();
+      this.state.sounds[this.state.lastSoundIndex].play();
       this.setState({
         lastSoundIndex:
           this.state.lastSoundIndex + 1 >= 5
@@ -101,25 +113,29 @@ export class Input extends React.Component {
     window.location.reload();
   }
 
+  calculateWpm() {}
+
   render() {
     return (
       <div>
         <div className={styles.information}>
           <p className={styles.code}>Errors: {this.state.errorCount} </p>
           <p className={styles.code}>Letters: {this.state.typedText.length} </p>
-          <p class={styles.code}>
+          <p className={styles.code}>
             Time elapsed:{" "}
             <code className={styles.timeElapsed}>
               {Math.round((this.state.time / 1000) * 1) / 1}
             </code>{" "}
             seconds
           </p>
-          <p class={styles.code}>
+          <p className={styles.code}>
             WPM:{" "}
             <code className={styles.timeElapsed}>
-              {(this.state.typedText.length /
-                Math.round(((this.state.time / 1000) * 100) / 100)) *
-                5}
+              {(
+                (this.state.typedText.length /
+                  Math.round(((this.state.time / 1000) * 100) / 100)) *
+                5
+              ).toString()}
             </code>{" "}
           </p>
         </div>

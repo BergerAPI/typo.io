@@ -1,4 +1,4 @@
-import { Input } from '../../components/Input.jsx'
+import { Input } from '../../components/input/Input.jsx'
 import { promises as fs } from 'fs'
 import path from 'path'
 
