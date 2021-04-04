@@ -43,7 +43,7 @@ export async function getStaticProps() {
   let quoteLenght = jsonObject.messages.length - 1;
   let quote =
     jsonObject.messages[
-    Math.round(randomNumber(0, quoteLenght))
+    Math.floor(randomNumber(0, quoteLenght))
     ];
 
   return {
