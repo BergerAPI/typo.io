@@ -45,7 +45,14 @@ export class Input extends React.Component {
       false
     );
 
-    fetch("http://0.0.0.0:3000/data/quotes.json")
+    fetch("http://0.0.0.0:3000/data/quotes.json", {
+        headers: {
+            "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+            "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+        }
+    })
       .then((response) => response.json())
       .then((jsonObject) => {
         let quoteLenght = jsonObject.messages.length;
