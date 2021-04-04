@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React from "react";
 import styles from "../styles/components/Input.module.css";
 
@@ -12,8 +11,25 @@ export class Input extends React.Component {
       remainingText: this.props.text,
       fullText: this.props.text,
       errorCount: 0,
-      validLetters: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW.?!;:," ',
+      validLetters:
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW.?!;:,'\" ",
+      time: 0.0,
+      start: 0.0,
+      wpm: 0.0,
     };
+  }
+
+  startTimer() {
+    this.setState({
+      time: this.state.time,
+      start: Date.now() - this.state.time,
+    });
+    this.timer = setInterval(() => {
+      this.setState({
+        time: Date.now() - this.state.start,
+      });
+      console.log(this.state.time);
+    }, 1);
   }
 
   componentDidMount() {
@@ -48,13 +64,19 @@ export class Input extends React.Component {
 
   handleValidInput(event) {
     if (event.key === this.state.fullText[this.state.index]) {
+      if (this.state.index == 0) {
+        this.startTimer();
+      }
+
       this.state.typedText += this.state.fullText[this.state.index];
       this.state.remainingText = this.state.remainingText.slice(
         1,
         this.state.remainingText.length
       );
-      this.setState({ index: this.state.index + 1 });
-    } else this.setState({errorCount: this.state.errorCount + 1});
+      this.setState({
+        index: this.state.index + 1,
+      });
+    } else this.setState({ errorCount: this.state.errorCount + 1 });
 
     if (this.state.index + 1 > this.state.fullText.length) this.handleFinish();
   }
@@ -66,11 +88,21 @@ export class Input extends React.Component {
   render() {
     return (
       <div>
-        <p>Errors: {this.state.errorCount}</p>
-        <p>
-          <a className={styles.typed}>{this.state.typedText}</a>
-          <a className={styles.remaining}>{this.state.remainingText}</a>
+        <p className={styles.information}>
+          <a>Errors: {this.state.errorCount} </a>
+          <a>Letters: {this.state.typedText.length} </a>
+          <a>
+            WPM:{" "}
+            {Math.round(this.state.typedText.length * (60 / this.state.time))}
+          </a>
         </p>
+        <div className={styles.text}>
+          <p>
+            <a className={styles.typed}>{this.state.typedText}</a>
+            <a className={styles.remaining}>{this.state.remainingText}</a>
+          </p>
+        </div>
+        <p className={styles.author}>~ {this.props.author}</p>
       </div>
     );
   }

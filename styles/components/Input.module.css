@@ -1,7 +1,26 @@
 .typed {
-    color: white;
+  color: white;
 }
 
 .remaining {
+  color: rgba(128, 128, 128, 10);
+}
+
+.text {
+  max-width: 300px;
+  display: -webkit-box;
+  -webkit-line-clamp: 9;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.author {
     color: rgba(128, 128, 128, 10);
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2px;
+}
+
+.information {
+    margin-bottom: 2px;
 }

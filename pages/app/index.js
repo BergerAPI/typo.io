@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
 
       <main className={styles.main}>
-        <Input text="Murder with care.">
+        <Input text="I'll be in my bedroom, making no noise and pretending I'm not there." author="Harry Potter">
         </Input>
       </main>
 
