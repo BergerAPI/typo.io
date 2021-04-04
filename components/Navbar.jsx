@@ -22,8 +22,8 @@ export class Navbar extends React.Component {
             <Link href="/credits">
               <a className={navStyle.link}>Credits</a>
             </Link>
-            <Link href="/changelog">
-              <a className={navStyle.link}>Changelog</a>
+            <Link href="/config">
+              <a className={navStyle.link}>Config</a>
             </Link>
             <Link href="/app">
               <a className={navStyle.button}>Play now</a>

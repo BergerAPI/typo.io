@@ -9,19 +9,19 @@
 
 .content {
   width: 75%;
-  position: fixed;
+  height: auto;
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
 }
 
 .content p {
   top: 50%;
 }
 
-.box {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+.content .box {
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .box p {
@@ -30,7 +30,7 @@
 }
 
 .box p:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .content p {
@@ -38,5 +38,5 @@
 }
 
 .offBox {
-    color: grey;
+  color: grey;
 }
