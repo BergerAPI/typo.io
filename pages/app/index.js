@@ -31,16 +31,21 @@ export default function App({ text, author }) {
   )
 }
 
+function randomNumber(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 export async function getStaticProps() {
   const dataPath = path.join(process.cwd(), '/public/data/quotes.json')
   const data = await fs.readFile(dataPath, 'utf8')
   const jsonObject = JSON.parse(data);
 
-  let quoteLenght = jsonObject.messages.length;
+  let quoteLenght = jsonObject.messages.length - 1;
   let quote =
     jsonObject.messages[
-    Math.floor(Math.random() * (quoteLenght - 1 - -1) + 0)
+    Math.round(randomNumber(0, quoteLenght))
     ];
+
   return {
     props: {
       text: quote.quote,
