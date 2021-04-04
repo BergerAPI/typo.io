@@ -18,7 +18,8 @@ export class Input extends React.Component {
       start: 0.0,
       wpm: 0.0,
       lastSoundIndex: 0,
-      sounds: [],
+      clickSounds: [],
+      errorSound: undefined,
       words: [],
     };
 
@@ -49,11 +50,14 @@ export class Input extends React.Component {
         '"'
     );
     for (let i = 1; i < 6; i++) {
-      this.state.sounds.push(new Audio("/sound/click/click_" + i + ".wav"));
+      this.state.clickSounds.push(
+        new Audio("/sound/click/click_" + i + ".wav")
+      );
       console.log('Preloaded audio file: "/sound/click/click_' + i + '.wav"');
     }
 
-    this.setState({ sounds: this.state.sounds });
+    this.setState({ clickSounds: this.state.clickSounds });
+    this.setState({ errorSound: new Audio("/sound/error.wav") });
 
     document.addEventListener(
       "keydown",
@@ -89,7 +93,7 @@ export class Input extends React.Component {
       if (this.state.index == 0) this.startTimer();
 
       if (localStorage.getItem("click_sounds") === "true")
-        this.state.sounds[this.state.lastSoundIndex].play();
+        this.state.clickSounds[this.state.lastSoundIndex].play();
       this.setState({
         lastSoundIndex:
           this.state.lastSoundIndex + 1 >= 5
@@ -105,7 +109,11 @@ export class Input extends React.Component {
       this.setState({
         index: this.state.index + 1,
       });
-    } else this.setState({ errorCount: this.state.errorCount + 1 });
+    } else {
+      this.setState({ errorCount: this.state.errorCount + 1 });
+      if (localStorage.getItem("error_sounds") === "true")
+        this.state.errorSound.play();
+    }
 
     if (this.state.index + 1 > this.state.fullText.length) this.handleFinish();
   }

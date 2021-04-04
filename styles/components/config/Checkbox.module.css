@@ -12,11 +12,7 @@
   height: auto;
   display: flex;
   align-items: center;
-  margin-top: 30px;
-}
-
-.content p {
-  top: 50%;
+  margin: 30px;
 }
 
 .content .box {
