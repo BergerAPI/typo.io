@@ -3,7 +3,7 @@ import { Navbar } from '../../components/Navbar.jsx'
 import { Input } from '../../components/Input.jsx'
 import styles from '../../styles/modules/App.module.css'
 
-export default function App() {
+export default function App({ text, author }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +15,7 @@ export default function App() {
       <Navbar />
 
       <main className={styles.main}>
-        <Input text="Loading..." author="Loading...">
+        <Input text={text} author={author}>
         </Input>
       </main>
 
@@ -27,4 +27,21 @@ export default function App() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const response = await fetch("http://0.0.0.0:3000/data/quotes.json")
+  const jsonObject = await response.json();
+
+  let quoteLenght = jsonObject.messages.length;
+  let quote =
+    jsonObject.messages[
+    Math.floor(Math.random() * (quoteLenght - 1 - -1) + 0)
+    ];
+  return {
+    props: {
+      text: quote.quote,
+      author: quote.author,
+    }
+  };
 }

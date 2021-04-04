@@ -45,29 +45,6 @@ export class Input extends React.Component {
       false
     );
 
-    fetch("http://0.0.0.0:3000/data/quotes.json", {
-        headers: {
-            "Access-Control-Allow-Credentials": true,
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-            "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-        }
-    })
-      .then((response) => response.json())
-      .then((jsonObject) => {
-        let quoteLenght = jsonObject.messages.length;
-        let quote =
-          jsonObject.messages[
-            Math.floor(Math.random() * (quoteLenght - 1 - -1) + 0)
-          ];
-
-        this.setState({
-          fullText: quote.quote,
-          remainingText: quote.quote,
-          author: quote.author,
-        });
-      });
-
     String.prototype.removeCharAt = function (i) {
       var tmp = this.split("");
       tmp.splice(i - 1, 1);
