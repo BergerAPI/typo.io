@@ -2,6 +2,8 @@ import Head from 'next/head'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Input } from '../../components/Input.jsx'
 import styles from '../../styles/modules/App.module.css'
+import { promises as fs } from 'fs'
+import path from 'path'
 
 export default function App({ text, author }) {
   return (
@@ -30,8 +32,9 @@ export default function App({ text, author }) {
 }
 
 export async function getStaticProps() {
-  const response = await fetch("http://0.0.0.0:3000/data/quotes.json")
-  const jsonObject = await response.json();
+  const dataPath = path.join(process.cwd(), '/public/data/quotes.json')
+  const data = await fs.readFile(dataPath, 'utf8')
+  const jsonObject = JSON.parse(data);
 
   let quoteLenght = jsonObject.messages.length;
   let quote =
