@@ -88,7 +88,8 @@ export class Input extends React.Component {
     if (event.key === this.state.fullText[this.state.index]) {
       if (this.state.index == 0) this.startTimer();
 
-      this.state.sounds[this.state.lastSoundIndex].play();
+      if (localStorage.getItem("click_sounds") === "true")
+        this.state.sounds[this.state.lastSoundIndex].play();
       this.setState({
         lastSoundIndex:
           this.state.lastSoundIndex + 1 >= 5

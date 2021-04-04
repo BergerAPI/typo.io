@@ -1,0 +1,42 @@
+.description {
+  color: grey;
+  max-width: 350px;
+  display: -webkit-box;
+  -webkit-line-clamp: 9;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.content {
+  width: 75%;
+  position: fixed;
+}
+
+.content p {
+  top: 50%;
+}
+
+.box {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.box p {
+  display: inline;
+  padding-left: 6px;
+}
+
+.box p:hover {
+    cursor: pointer;
+}
+
+.content p {
+  margin: 2px;
+}
+
+.offBox {
+    color: grey;
+}
