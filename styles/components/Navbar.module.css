@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 .navigation {
     width: 100%;
     display: flex;
@@ -15,6 +17,7 @@
     display: flex;
     align-items: center;
     margin-left: 80px;
+    font-family: "Roboto";
 }
 
 .navigation .logo img {

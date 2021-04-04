@@ -10,6 +10,7 @@ export class Input extends React.Component {
       typedText: "",
       remainingText: this.props.text,
       fullText: this.props.text,
+      author: this.props.author,
       errorCount: 0,
       validLetters:
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW.?!;:,'\" ",
@@ -43,6 +44,22 @@ export class Input extends React.Component {
       },
       false
     );
+
+    fetch("http://0.0.0.0:3000/data/quotes.json")
+      .then((response) => response.json())
+      .then((jsonObject) => {
+        let quoteLenght = jsonObject.messages.length;
+        let quote =
+          jsonObject.messages[
+            Math.floor(Math.random() * (quoteLenght - 1 - -1) + 0)
+          ];
+
+        this.setState({
+          fullText: quote.quote,
+          remainingText: quote.quote,
+          author: quote.author,
+        });
+      });
 
     String.prototype.removeCharAt = function (i) {
       var tmp = this.split("");
@@ -102,7 +119,7 @@ export class Input extends React.Component {
             <a className={styles.remaining}>{this.state.remainingText}</a>
           </p>
         </div>
-        <p className={styles.author}>~ {this.props.author}</p>
+        <p className={styles.author}>~ {this.state.author}</p>
       </div>
     );
   }

@@ -3,7 +3,7 @@ import { Navbar } from '../../components/Navbar.jsx'
 import { Input } from '../../components/Input.jsx'
 import styles from '../../styles/modules/App.module.css'
 
-export default function Home() {
+export default function App() {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
 
       <main className={styles.main}>
-        <Input text="I'll be in my bedroom, making no noise and pretending I'm not there." author="Harry Potter">
+        <Input text="Loading..." author="Loading...">
         </Input>
       </main>
 
