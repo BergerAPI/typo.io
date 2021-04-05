@@ -77,12 +77,13 @@ export class Input extends React.Component {
 
     axios
       .get(
-        "https://typo-io.vercel.app/api/language/" +
+        "http://localhost:3000/api/language/" +
           (localStorage.getItem("language")
             ? localStorage.getItem("language")
             : "english"), {
               headers: {
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "*",
+                "Origin": "*"
               }
             }
       )
