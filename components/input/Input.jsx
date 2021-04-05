@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles/components/Input.module.css";
+import axios from "axios";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -40,6 +41,10 @@ export class Input extends React.Component {
     }, 1);
   }
 
+  randomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
   componentDidMount() {
     console.log("Component mounted.");
     console.log(
@@ -69,6 +74,41 @@ export class Input extends React.Component {
       },
       false
     );
+
+    axios
+      .get(
+        "http://localhost:3000/api/language/" +
+          (localStorage.getItem("language")
+            ? localStorage.getItem("language")
+            : "english")
+      )
+      .then((res) => {
+        const data = res.data;
+
+        if (localStorage.getItem("mode") ? localStorage.getItem("mode") == "Quotes" : true) {
+          let quoteLenght = data.quotes.length - 1;
+          let quote =
+            data.quotes[Math.floor(this.randomNumber(0, quoteLenght))];
+
+          this.setState({
+            fullText: quote.quote.toString(),
+            author: quote.author.toString(),
+            remainingText: quote.quote.toString(),
+          });
+        }else {
+          let text = "";
+
+          for(let i = 0; i < this.randomNumber(10, 20); i++)
+            text += data.words[Math.floor(Math.random() * data.words.length)] + " "
+          text = text.substring(0, text.length - 1)
+
+          this.setState({
+            fullText: text,
+            author: "Alphabet",
+            remainingText: text,
+          });
+        }
+      });
 
     String.prototype.removeCharAt = function (i) {
       var tmp = this.split("");

@@ -1,5 +1,9 @@
 {
-    "messages": [
+    "quotes": [
+        {
+            "quote": "A sausage is a sausage.",
+            "author": "TrollHD"
+        },
         {
             "quote": "I'll be in my bedroom, making no noise and pretending I'm not there.",
             "author": "Harry Potter"
@@ -20,5 +24,9 @@
             "quote": "Just because you have the emotional range of a teaspoon doesn’t mean we all have.",
             "author": "Hermione Granger"
         }
+    ],
+    "words": [
+        "hello",
+        "consider"
     ]
 }
