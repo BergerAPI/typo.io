@@ -77,7 +77,7 @@ export class Input extends React.Component {
 
     axios
       .get(
-        "http://localhost:3000/api/language/" +
+        "https://typo-io.vercel.app/api/language/" +
           (localStorage.getItem("language")
             ? localStorage.getItem("language")
             : "english"), {
