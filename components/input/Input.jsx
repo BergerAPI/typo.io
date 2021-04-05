@@ -80,7 +80,11 @@ export class Input extends React.Component {
         "http://localhost:3000/api/language/" +
           (localStorage.getItem("language")
             ? localStorage.getItem("language")
-            : "english")
+            : "english"), {
+              headers: {
+                "Access-Control-Allow-Origin": "*"
+              }
+            }
       )
       .then((res) => {
         const data = res.data;
