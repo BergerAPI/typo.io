@@ -75,21 +75,19 @@ export class Input extends React.Component {
       false
     );
 
-    axios
-      .get(
+    fetch(
         "http://localhost:3000/api/language/" +
           (localStorage.getItem("language")
             ? localStorage.getItem("language")
-            : "english"), {
-              headers: {
-                'Content-Type': 'text/plain'
-              }
-            }
-      )
-      .then((res) => {
-        const data = res.data;
+            : "english")
+      ).then(async (res) => {
+        const data = await res.json();
 
-        if (localStorage.getItem("mode") ? localStorage.getItem("mode") == "Quotes" : true) {
+        if (
+          localStorage.getItem("mode")
+            ? localStorage.getItem("mode") == "Quotes"
+            : true
+        ) {
           let quoteLenght = data.quotes.length - 1;
           let quote =
             data.quotes[Math.floor(this.randomNumber(0, quoteLenght))];
@@ -99,12 +97,13 @@ export class Input extends React.Component {
             author: quote.author.toString(),
             remainingText: quote.quote.toString(),
           });
-        }else {
+        } else {
           let text = "";
 
-          for(let i = 0; i < this.randomNumber(10, 20); i++)
-            text += data.words[Math.floor(Math.random() * data.words.length)] + " "
-          text = text.substring(0, text.length - 1)
+          for (let i = 0; i < this.randomNumber(10, 20); i++)
+            text +=
+              data.words[Math.floor(Math.random() * data.words.length)] + " ";
+          text = text.substring(0, text.length - 1);
 
           this.setState({
             fullText: text,
