@@ -22,7 +22,6 @@ function runMiddleware(req, res, fn) {
 }
 
 export default async function handler(req, res) {
-    await runMiddleware(req, res, cors)
     const { language } = req.query
 
     const dataPath = path.join(process.cwd(), '/public/data/languages/' + language + '.json')
