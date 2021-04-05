@@ -82,8 +82,7 @@ export class Input extends React.Component {
             ? localStorage.getItem("language")
             : "english"), {
               headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Origin": "*"
+                'Content-Type': 'text/plain'
               }
             }
       )
