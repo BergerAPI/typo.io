@@ -12,15 +12,26 @@ export class Mode extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ currentValue: localStorage.getItem(this.props.item) });
+    if (localStorage.getItem(this.props.item))
+      this.setState({ currentValue: localStorage.getItem(this.props.item) });
+    else localStorage.setItem(this.props.item, this.state.values[0]);
   }
 
   render() {
     let valueList = this.state.values.map((value) => {
-      return <p className={this.state.currentValue !== value ? styles.offBox : undefined} onClick={() => {
-        this.setState({ currentValue: value });
-        localStorage.setItem(this.props.item, value);
-      }}>{value}</p>;
+      return (
+        <p
+          className={
+            this.state.currentValue !== value ? styles.offBox : undefined
+          }
+          onClick={() => {
+            this.setState({ currentValue: value });
+            localStorage.setItem(this.props.item, value);
+          }}
+        >
+          {value}
+        </p>
+      );
     });
 
     return (
