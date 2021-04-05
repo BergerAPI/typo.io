@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: "/api/:path*",
-        destination: 'https:/https://typo-io.vercel.app/api/:path*',
+        destination: 'https://typo-io.vercel.app/api/:path*',
       }
     ]
   }
