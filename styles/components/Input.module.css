@@ -7,7 +7,17 @@
   display: -webkit-box;
   -webkit-line-clamp: 9;
   -webkit-box-orient: vertical;
-  overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.text:focus {
+  cursor: default;
 }
 
 .author {

@@ -14,7 +14,7 @@ export class Input extends React.Component {
       author: this.props.author,
       errorCount: 0,
       validLetters:
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW.?!;:,'\" ",
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZöüäß.?!;:,'\" ",
       time: 0.0,
       start: 0.0,
       wpm: 0.0,
