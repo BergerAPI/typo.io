@@ -2,6 +2,10 @@
   color: rgba(128, 128, 128, 10);
 }
 
+.wrong {
+  color: #ef4f4f;
+} 
+
 .text {
   max-width: 300px;
   display: -webkit-box;

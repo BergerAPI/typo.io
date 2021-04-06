@@ -94,30 +94,30 @@ export class Input extends React.Component {
     });
     this.setState({ index: (this.state.index -= 1) });
     this.setState({
-      typedText: this.state.typedText.substring(0, this.state.typedText.length),
+      typedText: this.state.typedText.substring(0, this.state.typedText.length - 1),
     });
   }
 
   handleValidInput(event) {
-    if (event.key === this.state.fullText[this.state.index]) {
-      if (this.state.index == 0) this.startTimer();
+    if (this.state.index == 0) this.startTimer();
 
-      if (localStorage.getItem("click_sounds") === "true")
-        playSound("click_sounds");
+    if (localStorage.getItem("click_sounds") === "true")
+      playSound("click_sounds");
 
-      this.state.typedText += this.state.fullText[this.state.index];
-      this.state.remainingText = this.state.remainingText.slice(
-        1,
-        this.state.remainingText.length
-      );
-      this.setState({
-        index: this.state.index + 1,
-      });
-    } else {
-      this.setState({ errorCount: this.state.errorCount + 1 });
-      if (localStorage.getItem("error_sounds") === "true")
-        playSound("error_sounds");
-    }
+      if (event.key !== this.state.fullText[this.state.index]) {
+        this.setState({ errorCount: this.state.errorCount + 1 });
+        if (localStorage.getItem("error_sounds") === "true")
+          playSound("error_sounds");
+      }
+
+    this.state.typedText += event.key;
+    this.state.remainingText = this.state.remainingText.slice(
+      1,
+      this.state.remainingText.length
+    );
+    this.setState({
+      index: this.state.index + 1,
+    });
 
     if (this.state.index + 1 > this.state.fullText.length) this.handleFinish();
   }
@@ -133,6 +133,15 @@ export class Input extends React.Component {
       this.state.errorCount,
       this.state.words
     );
+
+    let typed = [];
+
+    for (let i = 0; i < this.state.typedText.length; i++) {
+      let value = this.state.typedText[i];
+      if (value !== this.state.fullText[i])
+        typed.push(<a className={styles.wrong}>{this.state.fullText[i]}</a>);
+      else typed.push(<a>{value}</a>);
+    }
 
     return (
       <div>
@@ -152,7 +161,7 @@ export class Input extends React.Component {
         </div>
         <div className={styles.text}>
           <p>
-            <a className={styles.typed}>{this.state.typedText}</a>
+            {typed}
             <a className={styles.remaining}>{this.state.remainingText}</a>
           </p>
         </div>
