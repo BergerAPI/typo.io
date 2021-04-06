@@ -1,7 +1,9 @@
 import React from "react";
 import styles from "../../styles/components/Input.module.css";
+
 import { getQuote, getRandomText } from "../../util/helper.js";
 import { initSounds, playSound } from "../../util/sound/sound-handler.js";
+import { calculate } from "../../util/logic/type-logic.js";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -83,12 +85,6 @@ export class Input extends React.Component {
         remainingText: text,
       });
     }
-
-    String.prototype.removeCharAt = function (i) {
-      var tmp = this.split("");
-      tmp.splice(i - 1, 1);
-      return tmp.join("");
-    };
   }
 
   handleBackspace() {
@@ -98,7 +94,7 @@ export class Input extends React.Component {
     });
     this.setState({ index: (this.state.index -= 1) });
     this.setState({
-      typedText: this.state.typedText.removeCharAt(this.state.typedText.length),
+      typedText: this.state.typedText.substring(0, this.state.typedText.length),
     });
   }
 
@@ -145,16 +141,25 @@ export class Input extends React.Component {
           </p>
           <p className={styles.code}>
             WPM:{" "}
-            <code className={styles.timeElapsed}>
-              {Math.round(
-                ((this.state.typedText.length -
-                  this.state.errorCount +
-                  this.state.words.length -
-                  2) *
-                  (60 / (Math.round((this.state.time / 1000) * 1) / 1))) /
-                  5
-              ).toString()}
-            </code>{" "}
+            {
+              calculate(
+                this.state.time,
+                this.state.typedText,
+                this.state.errorCount,
+                this.state.words
+              ).wpm
+            }
+          </p>
+          <p className={styles.code}>
+            Accuracy:{" "}
+            {
+              calculate(
+                this.state.time,
+                this.state.typedText,
+                this.state.errorCount,
+                this.state.words
+              ).accuracy
+            }%
           </p>
         </div>
         <div className={styles.text}>

@@ -29,3 +29,12 @@ export function playSound(name) {
     else 
         console.error("An error occured by loading the sound: " + name)
 }
+
+/**
+ * Adds a sound to the cache
+ * @param {string} name 
+ * @param {Audio, Audio[]} audio 
+ */
+export function initSound(name, audio) {
+    sounds.set(name, audio)
+}
