@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../../styles/components/Input.module.css";
-import useSWR from "swr";
+import { getQuote, getRandomText } from "../../util/helper.js";
+import { initSounds, playSound } from "../../util/sound/sound-handler.js";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -41,28 +42,9 @@ export class Input extends React.Component {
     }, 1);
   }
 
-  randomNumber(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
   async componentDidMount() {
     console.log("Component mounted.");
-    console.log(
-      'Received Text: "' +
-        this.state.fullText +
-        '" by/from "' +
-        this.state.author +
-        '"'
-    );
-    for (let i = 1; i < 6; i++) {
-      this.state.clickSounds.push(
-        new Audio("/sound/click/click_" + i + ".wav")
-      );
-      console.log('Preloaded audio file: "/sound/click/click_' + i + '.wav"');
-    }
-
-    this.setState({ clickSounds: this.state.clickSounds });
-    this.setState({ errorSound: new Audio("/sound/error.wav") });
+    initSounds();
 
     document.addEventListener(
       "keydown",
@@ -75,43 +57,32 @@ export class Input extends React.Component {
       false
     );
 
-    fetch(
-      "api/language/" +
-        (localStorage.getItem("language")
-          ? localStorage.getItem("language")
-          : "english")
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (
-          localStorage.getItem("mode")
-            ? localStorage.getItem("mode") == "Quotes"
-            : true
-        ) {
-          let quoteLenght = data.quotes.length - 1;
-          let quote =
-            data.quotes[Math.floor(this.randomNumber(0, quoteLenght))];
+    let language = localStorage.getItem("language")
+      ? localStorage.getItem("language")
+      : "english";
 
-          this.setState({
-            fullText: quote.quote.toString(),
-            author: quote.author.toString(),
-            remainingText: quote.quote.toString(),
-          });
-        } else {
-          let text = "";
+    if (
+      localStorage.getItem("mode")
+        ? localStorage.getItem("mode") == "Quotes"
+        : true
+    ) {
+      let quote = await getQuote(language);
+      console.log(quote);
 
-          for (let i = 0; i < this.randomNumber(10, 20); i++)
-            text +=
-              data.words[Math.floor(Math.random() * data.words.length)] + " ";
-          text = text.substring(0, text.length - 1);
-
-          this.setState({
-            fullText: text,
-            author: "Alphabet",
-            remainingText: text,
-          });
-        }
+      this.setState({
+        fullText: quote.quote.toString(),
+        author: quote.author.toString(),
+        remainingText: quote.quote.toString(),
       });
+    } else {
+      let text = await getRandomText(language);
+
+      this.setState({
+        fullText: text,
+        author: "Alphabet",
+        remainingText: text,
+      });
+    }
 
     String.prototype.removeCharAt = function (i) {
       var tmp = this.split("");
@@ -136,13 +107,7 @@ export class Input extends React.Component {
       if (this.state.index == 0) this.startTimer();
 
       if (localStorage.getItem("click_sounds") === "true")
-        this.state.clickSounds[this.state.lastSoundIndex].play();
-      this.setState({
-        lastSoundIndex:
-          this.state.lastSoundIndex + 1 >= 5
-            ? 0
-            : this.state.lastSoundIndex + 1,
-      });
+        playSound("click_sounds");
 
       this.state.typedText += this.state.fullText[this.state.index];
       this.state.remainingText = this.state.remainingText.slice(
@@ -155,7 +120,7 @@ export class Input extends React.Component {
     } else {
       this.setState({ errorCount: this.state.errorCount + 1 });
       if (localStorage.getItem("error_sounds") === "true")
-        this.state.errorSound.play();
+        playSound("error_sounds");
     }
 
     if (this.state.index + 1 > this.state.fullText.length) this.handleFinish();
@@ -164,8 +129,6 @@ export class Input extends React.Component {
   handleFinish() {
     window.location.reload();
   }
-
-  calculateWpm() {}
 
   render() {
     return (
@@ -183,10 +146,13 @@ export class Input extends React.Component {
           <p className={styles.code}>
             WPM:{" "}
             <code className={styles.timeElapsed}>
-              {(
-                (this.state.typedText.length /
-                  Math.round(((this.state.time / 1000) * 100) / 100)) *
-                5
+              {Math.round(
+                ((this.state.typedText.length -
+                  this.state.errorCount +
+                  this.state.words.length -
+                  2) *
+                  (60 / (Math.round((this.state.time / 1000) * 1) / 1))) /
+                  5
               ).toString()}
             </code>{" "}
           </p>
