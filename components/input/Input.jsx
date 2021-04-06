@@ -127,6 +127,13 @@ export class Input extends React.Component {
   }
 
   render() {
+    let calculated = calculate(
+      this.state.time,
+      this.state.typedText,
+      this.state.errorCount,
+      this.state.words
+    );
+
     return (
       <div>
         <div className={styles.information}>
@@ -139,28 +146,9 @@ export class Input extends React.Component {
             </code>{" "}
             seconds
           </p>
-          <p className={styles.code}>
-            WPM:{" "}
-            {
-              calculate(
-                this.state.time,
-                this.state.typedText,
-                this.state.errorCount,
-                this.state.words
-              ).wpm
-            }
-          </p>
-          <p className={styles.code}>
-            Accuracy:{" "}
-            {
-              calculate(
-                this.state.time,
-                this.state.typedText,
-                this.state.errorCount,
-                this.state.words
-              ).accuracy
-            }%
-          </p>
+          <p className={styles.code}>WPM: {calculated.wpm}</p>
+          <p className={styles.code}>Raw: {calculated.raw}</p>
+          <p className={styles.code}>Accuracy: {calculated.accuracy}%</p>
         </div>
         <div className={styles.text}>
           <p>
