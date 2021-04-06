@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/components/Input.module.css";
-import axios from "axios";
+import useSWR from "swr";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ export class Input extends React.Component {
     return Math.random() * (max - min) + min;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("Component mounted.");
     console.log(
       'Received Text: "' +
@@ -76,13 +76,13 @@ export class Input extends React.Component {
     );
 
     fetch(
-        "http://localhost:3000/api/language/" +
-          (localStorage.getItem("language")
-            ? localStorage.getItem("language")
-            : "english")
-      ).then(async (res) => {
-        const data = await res.json();
-
+      "api/language/" +
+        (localStorage.getItem("language")
+          ? localStorage.getItem("language")
+          : "english")
+    )
+      .then((res) => res.json())
+      .then((data) => {
         if (
           localStorage.getItem("mode")
             ? localStorage.getItem("mode") == "Quotes"
