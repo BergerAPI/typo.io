@@ -13,6 +13,8 @@ export class Input extends React.Component {
       index: 0,
       typedText: "",
       remainingText: this.props.text,
+      visibleRemainingText: "",
+      visibleText: "",
       fullText: this.props.text,
       author: this.props.author,
       errorCount: 0,
@@ -20,10 +22,6 @@ export class Input extends React.Component {
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZöüäß.?!;-:,'\" ",
       time: 0.0,
       start: 0.0,
-      wpm: 0.0,
-      lastSoundIndex: 0,
-      clickSounds: [],
-      errorSound: undefined,
       words: [],
       unit: undefined,
       timeText: "",
@@ -45,7 +43,11 @@ export class Input extends React.Component {
       });
       if (localStorage.getItem("mode")) {
         if (localStorage.getItem("mode") !== "Time") {
-          if (this.state.time > parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000) this.handleFinish();
+          if (
+            this.state.time >
+            parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000
+          )
+            this.handleFinish();
         }
       }
     }, 1);
@@ -78,8 +80,6 @@ export class Input extends React.Component {
 
     if (localStorage.getItem("mode") !== "Text")
       this.setState({ timeText: " / " + localStorage.getItem("mode") });
-
-      console.log(this.state.timeText)
 
     if (
       localStorage.getItem("input_mode")
@@ -171,6 +171,7 @@ export class Input extends React.Component {
         typed.push(<a>{value}</a>);
       }
     }
+
     typed.push(<img className={styles.carrot} src="/carrot.png"></img>);
 
     return (
