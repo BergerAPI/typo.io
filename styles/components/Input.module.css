@@ -7,7 +7,7 @@
 }
 
 .text {
-  max-width: 300px;
+  max-width: 500px;
   display: -webkit-box;
   -webkit-line-clamp: 9;
   -webkit-box-orient: vertical;

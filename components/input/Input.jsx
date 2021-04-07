@@ -25,7 +25,8 @@ export class Input extends React.Component {
       clickSounds: [],
       errorSound: undefined,
       words: [],
-      unit: undefined
+      unit: undefined,
+      timeText: "",
     };
 
     this.state.fullText.split(" ").forEach((element) => {
@@ -42,6 +43,11 @@ export class Input extends React.Component {
       this.setState({
         time: Date.now() - this.state.start,
       });
+      if (localStorage.getItem("mode")) {
+        if (localStorage.getItem("mode") !== "Time") {
+          if (this.state.time > parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000) this.handleFinish();
+        }
+      }
     }, 1);
   }
 
@@ -66,11 +72,18 @@ export class Input extends React.Component {
 
     this.state.unit = localStorage.getItem("unit")
       ? localStorage.getItem("unit")
-      : "WPM"
+      : "WPM";
+
+    if (!localStorage.getItem("mode")) localStorage.setItem("mode", "15s");
+
+    if (localStorage.getItem("mode") !== "Text")
+      this.setState({ timeText: " / " + localStorage.getItem("mode") });
+
+      console.log(this.state.timeText)
 
     if (
-      localStorage.getItem("mode")
-        ? localStorage.getItem("mode") == "Quotes"
+      localStorage.getItem("input_mode")
+        ? localStorage.getItem("input_mode") == "Quotes"
         : true
     ) {
       let quote = await getQuote(language);
@@ -146,7 +159,9 @@ export class Input extends React.Component {
     let remaining = [];
 
     for (let i = 0; i < this.state.fullText.length; i++)
-      remaining.push(<a className={styles.remaining}>{this.state.remainingText[i]}</a>);
+      remaining.push(
+        <a className={styles.remaining}>{this.state.remainingText[i]}</a>
+      );
 
     for (let i = 0; i < this.state.typedText.length; i++) {
       let value = this.state.typedText[i];
@@ -164,9 +179,13 @@ export class Input extends React.Component {
           <p className={styles.code}>Errors: {this.state.errorCount} </p>
           <p className={styles.code}>Letters: {this.state.typedText.length} </p>
           <p className={styles.code}>
-            Time elapsed: {Math.round((this.state.time / 1000) * 1) / 1}s
+            Time elapsed: {Math.round((this.state.time / 1000) * 1) / 1}s{" "}
+            {this.state.timeText}
           </p>
-          <p className={styles.code}>{this.state.unit}: {this.state.unit == "wpm" ? calculated.wpm : calculated.cpm}</p>
+          <p className={styles.code}>
+            {this.state.unit}:{" "}
+            {this.state.unit === "WPM" ? calculated.wpm : calculated.cpm}
+          </p>
           <p className={styles.code}>Raw: {calculated.raw}</p>
           <p className={styles.code}>Accuracy: {calculated.accuracy}%</p>
         </div>
