@@ -24,11 +24,48 @@ export async function getRandomText(language) {
         .then((data) => {
             let text = "";
 
-            for (let i = 0; i < (Math.random() * (30 - 20) + 20); i++)
+            for (let i = 0; i < (Math.random() * (70 - 40) + 40); i++)
                 text += data.words[Math.floor(Math.random() * data.words.length)] + " ";
 
             response = text.substring(0, text.length - 1);
         });
     console.log(response)
     return response
+}
+
+/**
+ * Packages a array into parts
+ * @param {strign} text 
+ * @param {number} count 
+ */
+export function packageArray(text, count) {
+    const words = text.split(" ");
+    const nineLength = Math.round(words.length / count);
+    const lines = [];
+    const last = [];
+    const temp = [];
+
+    for (let i = 0; i < nineLength + 1; i++) {
+        if (i == 0) continue;
+
+        let double = i * count;
+        let start = double - count;
+
+        if (start < 0) start = 0;
+
+        lines.push(words.slice(start, double));
+    }
+
+    if (nineLength * count < words.length) {
+        for (let i in lines)
+            for (let a of lines[i])
+                temp.push(a);
+
+        for (let r of words.slice(temp.length, words.length))
+            last.push(r)
+
+        lines.push(last);
+    }
+
+    return lines
 }
