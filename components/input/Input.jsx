@@ -17,7 +17,7 @@ export class Input extends React.Component {
       author: this.props.author,
       errorCount: 0,
       validLetters:
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZöüäß.?!;:,'\" ",
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZöüäß.?!;-:,'\" ",
       time: 0.0,
       start: 0.0,
       wpm: 0.0,
@@ -25,6 +25,7 @@ export class Input extends React.Component {
       clickSounds: [],
       errorSound: undefined,
       words: [],
+      unit: undefined
     };
 
     this.state.fullText.split(" ").forEach((element) => {
@@ -63,6 +64,10 @@ export class Input extends React.Component {
       ? localStorage.getItem("language")
       : "english";
 
+    this.state.unit = localStorage.getItem("unit")
+      ? localStorage.getItem("unit")
+      : "WPM"
+
     if (
       localStorage.getItem("mode")
         ? localStorage.getItem("mode") == "Quotes"
@@ -94,7 +99,10 @@ export class Input extends React.Component {
     });
     this.setState({ index: (this.state.index -= 1) });
     this.setState({
-      typedText: this.state.typedText.substring(0, this.state.typedText.length - 1),
+      typedText: this.state.typedText.substring(
+        0,
+        this.state.typedText.length - 1
+      ),
     });
   }
 
@@ -104,11 +112,11 @@ export class Input extends React.Component {
     if (localStorage.getItem("click_sounds") === "true")
       playSound("click_sounds");
 
-      if (event.key !== this.state.fullText[this.state.index]) {
-        this.setState({ errorCount: this.state.errorCount + 1 });
-        if (localStorage.getItem("error_sounds") === "true")
-          playSound("error_sounds");
-      }
+    if (event.key !== this.state.fullText[this.state.index]) {
+      this.setState({ errorCount: this.state.errorCount + 1 });
+      if (localStorage.getItem("error_sounds") === "true")
+        playSound("error_sounds");
+    }
 
     this.state.typedText += event.key;
     this.state.remainingText = this.state.remainingText.slice(
@@ -135,13 +143,20 @@ export class Input extends React.Component {
     );
 
     let typed = [];
+    let remaining = [];
+
+    for (let i = 0; i < this.state.fullText.length; i++)
+      remaining.push(<a className={styles.remaining}>{this.state.remainingText[i]}</a>);
 
     for (let i = 0; i < this.state.typedText.length; i++) {
       let value = this.state.typedText[i];
       if (value !== this.state.fullText[i])
         typed.push(<a className={styles.wrong}>{this.state.fullText[i]}</a>);
-      else typed.push(<a>{value}</a>);
+      else {
+        typed.push(<a>{value}</a>);
+      }
     }
+    typed.push(<img className={styles.carrot} src="/carrot.png"></img>);
 
     return (
       <div>
@@ -149,20 +164,16 @@ export class Input extends React.Component {
           <p className={styles.code}>Errors: {this.state.errorCount} </p>
           <p className={styles.code}>Letters: {this.state.typedText.length} </p>
           <p className={styles.code}>
-            Time elapsed:{" "}
-            <code className={styles.timeElapsed}>
-              {Math.round((this.state.time / 1000) * 1) / 1}
-            </code>{" "}
-            seconds
+            Time elapsed: {Math.round((this.state.time / 1000) * 1) / 1}s
           </p>
-          <p className={styles.code}>WPM: {calculated.wpm}</p>
+          <p className={styles.code}>{this.state.unit}: {this.state.unit == "wpm" ? calculated.wpm : calculated.cpm}</p>
           <p className={styles.code}>Raw: {calculated.raw}</p>
           <p className={styles.code}>Accuracy: {calculated.accuracy}%</p>
         </div>
         <div className={styles.text}>
           <p>
             {typed}
-            <a className={styles.remaining}>{this.state.remainingText}</a>
+            {remaining}
           </p>
         </div>
         <p className={styles.author}>~ {this.state.author}</p>
