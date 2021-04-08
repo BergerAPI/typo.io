@@ -4,6 +4,7 @@ import styles from "../../styles/components/Input.module.css";
 import { getQuote, getRandomText } from "../../util/helper.js";
 import { initSounds, playSound } from "../../util/sound/sound-handler.js";
 import { calculate } from "../../util/logic/type-logic.js";
+import { db } from "../../util/firebase/firebase.js";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -87,7 +88,6 @@ export class Input extends React.Component {
         : true
     ) {
       let quote = await getQuote(language);
-      console.log(quote);
 
       this.setState({
         fullText: quote.quote.toString(),
@@ -144,7 +144,21 @@ export class Input extends React.Component {
   }
 
   handleFinish() {
-    window.location.reload();
+    let calculated = calculate(
+      this.state.time,
+      this.state.typedText,
+      this.state.errorCount,
+      this.state.words
+    );
+
+    db.ref("stats").push({
+      wpm: calculated.wpm,
+      accuracy: calculated.accuracy,
+      text: this.state.fullText,
+      writenText: this.state.typedText
+    }).then(() => {
+      window.location.reload();
+    })
   }
 
   render() {
