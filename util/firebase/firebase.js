@@ -13,7 +13,6 @@ if (!firebase.apps.length) {
         appId: process.env.NEXT_PUBLIC_APP_ID,
         measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
     })
-    firebase.analytics()
 }
 
 export const db = firebase.database();
