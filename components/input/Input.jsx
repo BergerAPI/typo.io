@@ -45,7 +45,7 @@ export class Input extends React.Component {
       if (localStorage.getItem("mode")) {
         if (localStorage.getItem("mode") !== "Time") {
           if (
-            this.state.time >
+            this.state.time ===
             parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000
           )
             this.handleFinish();
