@@ -22,13 +22,13 @@ export class UserList extends React.Component {
       .once("value")
       .then((snap) => {
         let keys = snap.val();
+        var objectKeys = Object.keys(keys);
 
-        var objectKeys = Object.keys(snap.val());
         for (let x = 0; x < objectKeys.length; x++) {
           var currentKey = objectKeys[x];
           var userData = keys[currentKey];
 
-          if (x <= 4) {
+          if (x <= 4) 
             prevUsers.push({
               key: x,
               value: {
@@ -37,12 +37,11 @@ export class UserList extends React.Component {
                 time: userData.time,
               },
             });
-          }
         }
       })
       .then(() => {
         prevUsers.sort((a, b) => {
-          return -a.key - -b.key;
+          return a.key - b.key;
         });
 
         prevUsers.forEach((item) =>

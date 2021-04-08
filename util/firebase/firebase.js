@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/database'
 
-if (!firebase.apps.length)
+if (!firebase.apps.length) {
     firebase.initializeApp({
         apiKey: process.env.NEXT_PUBLIC_API_KEY,
         authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
@@ -11,6 +11,8 @@ if (!firebase.apps.length)
         messagingSenderId: process.env.NEXT_PUBLIC_MESSAGE_SENDER_ID,
         appId: process.env.NEXT_PUBLIC_APP_ID
     })
+    firebase.analytics()
+}
 
 export const db = firebase.database();
 export default firebase
