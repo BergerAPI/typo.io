@@ -155,7 +155,8 @@ export class Input extends React.Component {
       wpm: calculated.wpm,
       accuracy: calculated.accuracy,
       text: this.state.fullText,
-      writenText: this.state.typedText
+      writtenText: this.state.typedText,
+      time: this.state.time
     }).then(() => {
       window.location.reload();
     })

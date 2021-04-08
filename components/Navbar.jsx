@@ -25,6 +25,9 @@ export class Navbar extends React.Component {
             <Link href="/config">
               <a className={navStyle.link}>Config</a>
             </Link>
+            <Link href="/leaderboard">
+              <a className={navStyle.link}>Leaderboard</a>
+            </Link>
             <Link href="/app">
               <a className={navStyle.button}>Play now</a>
             </Link>

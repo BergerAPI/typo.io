@@ -1,8 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/database'
 
-console.log(process.env.NEXT_PUBLIC_API_KEY)
-
 if (!firebase.apps.length)
     firebase.initializeApp({
         apiKey: process.env.NEXT_PUBLIC_API_KEY,
