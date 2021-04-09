@@ -46,10 +46,12 @@ export class Input extends React.Component {
       if (localStorage.getItem("mode")) {
         if (localStorage.getItem("mode") !== "Time") {
           if (
-            this.state.time ===
+            this.state.time >=
             parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000
-          )
+          ) {
+            clearInterval(this.timer)
             this.handleFinish();
+          }
         }
       }
     }, 1);
@@ -196,7 +198,7 @@ export class Input extends React.Component {
     return (
       <>
         {(() => {
-          if (this.state.author === this.props.text) 
+          if (this.state.author === this.props.text)
             return <MoonLoader color={"#FFF"} loading={true} />;
           else
             return (
