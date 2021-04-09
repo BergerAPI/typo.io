@@ -21,12 +21,7 @@ export default function Register() {
         let email = document.querySelector("input[name='email']").value
         let password = document.querySelector("input[name='password']").value
 
-        await auth.createUserWithEmailAndPassword(email, password).then(async (userCredential) => {
-          var user = userCredential.user;
-          await user.sendEmailVerification().catch(function (error) {
-            console.log("error: " + error)
-          });
-        })
+        await auth.createUserWithEmailAndPassword(email, password)
           .catch((error) => {
             var errorMessage = error.message;
             console.log(errorMessage)
@@ -36,15 +31,6 @@ export default function Register() {
       }} type="submit">Submit</button>
 
       <button style={inputCss} onClick={async () => {
-        let result = await registerWithGoogle()
-
-        if (result !== undefined)
-          await result.sendEmailVerification().then(function () {
-            console.log("email sent")
-          }).catch(function (error) {
-            console.log("error: " + error)
-          });
-
         Router.push("/app")
       }} type="submit">Register with Google</button>
     </div>
