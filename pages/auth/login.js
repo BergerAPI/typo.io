@@ -18,6 +18,9 @@ export default function Register() {
             console.log(errorMessage)
           });
       }} type="submit">Submit</button>
+      <p style={{cursor: "default"}} onClick={() => {
+          Router.push("/auth/register")
+      }}>No account yet?</p>
     </>
   )
 }
