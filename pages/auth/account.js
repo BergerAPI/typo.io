@@ -2,8 +2,11 @@ import Router from "next/router";
 import { auth } from "../../util/firebase/firebase"
 
 export default function Account() {
-    if (auth.currentUser == null && typeof window !== 'undefined')
-        Router.push('/')
+    if (typeof window !== 'undefined') {
+        auth.onAuthStateChanged((authUser) => {
+            Router.push('/')
+        })
+    }
 
     return (
         <>

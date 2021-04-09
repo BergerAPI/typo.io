@@ -14,9 +14,11 @@ export class Navbar extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      loginState: auth.currentUser === null ? "login" : "account",
-    });
+    auth.onAuthStateChanged((authUser) => {
+      this.setState({
+        loginState: authUser === null ? "login" : "account",
+      });
+    })
   }
 
   render() {
