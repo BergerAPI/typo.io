@@ -27,7 +27,10 @@ export class Input extends React.Component {
       words: [],
       unit: undefined,
       timeText: "",
+      fontSize: "15px"
     };
+
+    this.visibleTextRef = React.createRef();
 
     this.state.fullText.split(" ").forEach((element) => {
       this.state.words.push(element);
@@ -49,7 +52,7 @@ export class Input extends React.Component {
             this.state.time >=
             parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000
           ) {
-            clearInterval(this.timer)
+            clearInterval(this.timer);
             this.handleFinish();
           }
         }
@@ -84,6 +87,11 @@ export class Input extends React.Component {
 
     if (localStorage.getItem("mode") !== "Text")
       this.setState({ timeText: " / " + localStorage.getItem("mode") });
+
+    if (!localStorage.getItem("font-size"))
+      localStorage.setItem("font-size", "15px");
+
+      this.setState({ fontSize: localStorage.getItem("font-size") });
 
     if (
       localStorage.getItem("input_mode")
@@ -226,7 +234,7 @@ export class Input extends React.Component {
                   </p>
                 </div>
                 <div className={styles.text}>
-                  <p>
+                  <p style={{fontSize: this.state.fontSize}}>
                     {typed}
                     {remaining}
                   </p>

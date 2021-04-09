@@ -10,6 +10,7 @@ export default function Home() {
       <Mode title="Unit" description="If you want to see your wpm or you cpm." item="unit" values={["WPM", "CPM"]} />
       <Mode title="Mode" description="If you want to play in time, or just write a text." item="mode" values={["Text", "10s", "15s", "30s", "60s"]} />
       <Mode title="Language" description="The Language, in which you want to type in" item="language" values={["English", "German", "France", "Russia"]} />
+      <Mode title="Font-Size" description="The size of the font" item="font-size" values={["15px", "20px", "25px", "30px"]} />
    </>
   )
 }
