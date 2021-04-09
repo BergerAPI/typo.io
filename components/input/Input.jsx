@@ -151,12 +151,13 @@ export class Input extends React.Component {
       this.state.words
     );
 
-    db.ref("stats").push({
+    db.collection("stats").add({
       wpm: calculated.wpm,
       accuracy: calculated.accuracy,
       text: this.state.fullText,
       writtenText: this.state.typedText,
-      time: this.state.time
+      time: this.state.time,
+      timeStamp: Date.now()
     }).then(() => {
       window.location.reload();
     })
