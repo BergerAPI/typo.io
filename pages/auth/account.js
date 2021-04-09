@@ -16,6 +16,18 @@ export default function Account() {
                     Router.push("/")
                 })
             }} type="submit">Logout</button>
+
+            <input type="text" name="link" placeholder="Link" />
+            <button onClick={async () => {
+                let link = document.querySelector("input[name='link']").value
+
+                await auth.onAuthStateChanged(async (authUser) => {
+                    if (authUser !== null)
+                        await authUser.updateProfile({
+                            photoURL: link
+                        })
+                });
+            }} type="submit">Save</button>
         </>
     )
 }
