@@ -208,8 +208,6 @@ export class Input extends React.Component {
       }
     }
 
-    typed.push(<img className={styles.carrot} src="/carrot.png"></img>);
-
     return (
       <>
         {(() => {
