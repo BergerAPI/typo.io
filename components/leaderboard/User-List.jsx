@@ -3,7 +3,6 @@ import MoonLoader from "react-spinners/MoonLoader";
 
 import { User } from "./User.jsx";
 import { db } from "../../util/firebase/firebase.js";
-import { css } from '@emotion/react'
 
 export class UserList extends React.Component {
   constructor(props) {

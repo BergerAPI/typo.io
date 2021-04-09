@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles/components/Input.module.css";
+import MoonLoader from "react-spinners/MoonLoader";
 
 import { getQuote, getRandomText } from "../../util/helper.js";
 import { initSounds, playSound } from "../../util/sound/sound-handler.js";
@@ -151,16 +152,18 @@ export class Input extends React.Component {
       this.state.words
     );
 
-    db.collection("stats").add({
-      wpm: calculated.wpm,
-      accuracy: calculated.accuracy,
-      text: this.state.fullText,
-      writtenText: this.state.typedText,
-      time: this.state.time,
-      timeStamp: Date.now()
-    }).then(() => {
-      window.location.reload();
-    })
+    db.collection("stats")
+      .add({
+        wpm: calculated.wpm,
+        accuracy: calculated.accuracy,
+        text: this.state.fullText,
+        writtenText: this.state.typedText,
+        time: this.state.time,
+        timeStamp: Date.now(),
+      })
+      .then(() => {
+        window.location.reload();
+      });
   }
 
   render() {
@@ -191,29 +194,46 @@ export class Input extends React.Component {
     typed.push(<img className={styles.carrot} src="/carrot.png"></img>);
 
     return (
-      <div>
-        <div className={styles.information}>
-          <p className={styles.code}>Errors: {this.state.errorCount} </p>
-          <p className={styles.code}>Letters: {this.state.typedText.length} </p>
-          <p className={styles.code}>
-            Time elapsed: {Math.round((this.state.time / 1000) * 1) / 1}s{" "}
-            {this.state.timeText}
-          </p>
-          <p className={styles.code}>
-            {this.state.unit}:{" "}
-            {this.state.unit === "WPM" ? calculated.wpm : calculated.cpm}
-          </p>
-          <p className={styles.code}>Raw: {calculated.raw}</p>
-          <p className={styles.code}>Accuracy: {calculated.accuracy}%</p>
-        </div>
-        <div className={styles.text}>
-          <p>
-            {typed}
-            {remaining}
-          </p>
-        </div>
-        <p className={styles.author}>~ {this.state.author}</p>
-      </div>
+      <>
+        {(() => {
+          if (this.state.author === this.props.text) 
+            return <MoonLoader color={"#FFF"} loading={true} />;
+          else
+            return (
+              <div>
+                <div className={styles.information}>
+                  <p className={styles.code}>
+                    Errors: {this.state.errorCount}{" "}
+                  </p>
+                  <p className={styles.code}>
+                    Letters: {this.state.typedText.length}{" "}
+                  </p>
+                  <p className={styles.code}>
+                    Time elapsed: {Math.round((this.state.time / 1000) * 1) / 1}
+                    s {this.state.timeText}
+                  </p>
+                  <p className={styles.code}>
+                    {this.state.unit}:{" "}
+                    {this.state.unit === "WPM"
+                      ? calculated.wpm
+                      : calculated.cpm}
+                  </p>
+                  <p className={styles.code}>Raw: {calculated.raw}</p>
+                  <p className={styles.code}>
+                    Accuracy: {calculated.accuracy}%
+                  </p>
+                </div>
+                <div className={styles.text}>
+                  <p>
+                    {typed}
+                    {remaining}
+                  </p>
+                </div>
+                <p className={styles.author}>~ {this.state.author}</p>
+              </div>
+            );
+        })()}
+      </>
     );
   }
 }
