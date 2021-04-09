@@ -2,8 +2,23 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 import navStyle from "../styles/components/Navbar.module.css";
+import { auth } from "../util/firebase/firebase";
 
 export class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loginState: "login",
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      loginState: auth.currentUser === null ? "login" : "account",
+    });
+  }
+
   render() {
     return (
       <>
@@ -27,6 +42,11 @@ export class Navbar extends React.Component {
             </Link>
             <Link href="/leaderboard">
               <a className={navStyle.link}>Leaderboard</a>
+            </Link>
+            <Link href={"/auth/" + this.state.loginState}>
+              <a className={navStyle.link}>
+                {this.state.loginState === "account" ? "Account" : "Login"}
+              </a>
             </Link>
             <Link href="/app">
               <a className={navStyle.button}>Play now</a>

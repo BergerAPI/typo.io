@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
-import'firebase/firestore'
+import 'firebase/firestore'
+import 'firebase/auth'
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
@@ -16,4 +17,16 @@ if (!firebase.apps.length) {
 }
 
 export const db = firebase.firestore();
+export const auth = firebase.auth();
+
+export async function registerWithGoogle() {
+    let returns;
+
+    await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        .then((result) => returns = result.user)
+        .catch((error) => returns = undefined);
+
+    return returns;
+}
+
 export default firebase
