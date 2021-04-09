@@ -5,7 +5,7 @@ import MoonLoader from "react-spinners/MoonLoader";
 import { getQuote, getRandomText } from "../../util/helper.js";
 import { initSounds, playSound } from "../../util/sound/sound-handler.js";
 import { calculate } from "../../util/logic/type-logic.js";
-import { db } from "../../util/firebase/firebase.js";
+import { db, auth } from "../../util/firebase/firebase.js";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ export class Input extends React.Component {
       words: [],
       unit: undefined,
       timeText: "",
-      fontSize: "15px"
+      fontSize: "15px",
     };
 
     this.visibleTextRef = React.createRef();
@@ -42,7 +42,7 @@ export class Input extends React.Component {
       time: this.state.time,
       start: Date.now() - this.state.time,
     });
-    this.timer = setInterval(() => {
+    this.timer = setInterval(async () => {
       this.setState({
         time: Date.now() - this.state.start,
       });
@@ -53,7 +53,7 @@ export class Input extends React.Component {
             parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000
           ) {
             clearInterval(this.timer);
-            this.handleFinish();
+            await this.handleFinish();
           }
         }
       }
@@ -66,7 +66,7 @@ export class Input extends React.Component {
 
     document.addEventListener(
       "keydown",
-      (event) => {
+      async (event) => {
         if (this.state.validLetters.includes(event.key))
           this.handleValidInput(event);
         else if (event.keyCode == 8 && this.state.index > 0)
@@ -91,7 +91,7 @@ export class Input extends React.Component {
     if (!localStorage.getItem("font-size"))
       localStorage.setItem("font-size", "15px");
 
-      this.setState({ fontSize: localStorage.getItem("font-size") });
+    this.setState({ fontSize: localStorage.getItem("font-size") });
 
     if (
       localStorage.getItem("input_mode")
@@ -130,7 +130,7 @@ export class Input extends React.Component {
     });
   }
 
-  handleValidInput(event) {
+  async handleValidInput(event) {
     if (this.state.index == 0) this.startTimer();
 
     if (localStorage.getItem("click_sounds") === "true")
@@ -151,10 +151,10 @@ export class Input extends React.Component {
       index: this.state.index + 1,
     });
 
-    if (this.state.index + 1 > this.state.fullText.length) this.handleFinish();
+    if (this.state.index + 1 > this.state.fullText.length) await this.handleFinish();
   }
 
-  handleFinish() {
+  async handleFinish() {
     let calculated = calculate(
       this.state.time,
       this.state.typedText,
@@ -162,18 +162,25 @@ export class Input extends React.Component {
       this.state.words
     );
 
-    db.collection("stats")
-      .add({
-        wpm: calculated.wpm,
-        accuracy: calculated.accuracy,
-        text: this.state.fullText,
-        writtenText: this.state.typedText,
-        time: this.state.time,
-        timeStamp: Date.now(),
-      })
-      .then(() => {
+    await auth.onAuthStateChanged(async (authUser) => {
+      if (authUser !== null) {
+        await db.collection("stats")
+          .add({
+            displayName: authUser.displayName,
+            photo: authUser.photoURL,
+            wpm: calculated.wpm,
+            accuracy: calculated.accuracy,
+            text: this.state.fullText,
+            writtenText: this.state.typedText,
+            time: this.state.time,
+            timeStamp: Date.now(),
+          }).then(() => {
+            window.location.reload();
+          })
+      }else {
         window.location.reload();
-      });
+      }
+    });
   }
 
   render() {
@@ -234,7 +241,7 @@ export class Input extends React.Component {
                   </p>
                 </div>
                 <div className={styles.text}>
-                  <p style={{fontSize: this.state.fontSize}}>
+                  <p style={{ fontSize: this.state.fontSize }}>
                     {typed}
                     {remaining}
                   </p>

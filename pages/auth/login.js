@@ -21,7 +21,9 @@ export default function Login() {
                     let email = document.querySelector("input[name='email']").value
                     let password = document.querySelector("input[name='password']").value
 
-                    auth.signInWithEmailAndPassword(email, password)
+                    auth.signInWithEmailAndPassword(email, password).then((userCredential) => {
+                        Router.push("/app")
+                    })
                         .catch((error) => {
                             var errorMessage = error.message;
                             console.log(errorMessage)

@@ -26,6 +26,8 @@ export class UserList extends React.Component {
         accuracy: data.accuracy,
         time: data.time,
         timeStamp: data.timeStamp,
+        photo: data.photo,
+        displayName: data.displayName
       });
     });
 
@@ -45,23 +47,26 @@ export class UserList extends React.Component {
       var secd = mind % 60;
       var seconds = Math.ceil(secd);
 
-      if(index <= 4)
-      users.push(
-        <User
-          title={item.wpm}
-          description={
-            "Accuracy: " +
-            item.accuracy +
-            "% Time: " +
-            Math.round((item.time / 1000) * 1) / 1 +
-            "s, " +
-            minutes +
-            "m " +
-            seconds +
-            "s ago"
-          }
-        />
-      );
+      if (index <= 4)
+        users.push(
+          <User
+            title={item.displayName}
+            description={
+              "WPM: " +
+              item.wpm +
+              " Accuracy: " +
+              item.accuracy +
+              "% Time: " +
+              Math.round((item.time / 1000) * 1) / 1 +
+              "s, " +
+              minutes +
+              "m " +
+              seconds +
+              "s ago"
+            }
+            photo={item.photo}
+          />
+        );
     });
 
     this.setState({

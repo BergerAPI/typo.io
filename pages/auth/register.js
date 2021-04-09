@@ -22,6 +22,14 @@ export default function Register() {
         let password = document.querySelector("input[name='password']").value
 
         await auth.createUserWithEmailAndPassword(email, password)
+        .then(async (cred) => {
+            let user = cred.user
+
+            await user.updateProfile({
+              displayName: email.split("@")[0],
+              photoURL: "https://www.knack.com/images/about/default-profile.png"
+            })
+        })
           .catch((error) => {
             var errorMessage = error.message;
             console.log(errorMessage)
@@ -31,7 +39,10 @@ export default function Register() {
       }} type="submit">Submit</button>
 
       <button style={inputCss} onClick={async () => {
-        Router.push("/app")
+        let result = await registerWithGoogle()
+
+        if (result !== undefined)
+          Router.push("/app")
       }} type="submit">Register with Google</button>
     </div>
   )
