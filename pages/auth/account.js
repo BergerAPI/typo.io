@@ -4,7 +4,8 @@ import { auth } from "../../util/firebase/firebase"
 export default function Account() {
     if (typeof window !== 'undefined') {
         auth.onAuthStateChanged((authUser) => {
-            Router.push('/')
+            if (authUser === null)
+                Router.push('/')
         })
     }
 
