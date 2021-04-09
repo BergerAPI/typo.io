@@ -22,3 +22,26 @@ a {
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
+
+input {
+  outline: none;
+  border: none;
+  border-radius: 0.25rem;
+  background: #333a45;
+  color: var(--text-color);
+  padding: .5rem;
+  font-size: 1rem;
+  line-height: 1rem;
+  font-family: monospace
+}
+
+button {
+  outline: none;
+  border: none;
+  border-radius: 0.25rem;
+  background: #333a45;
+  padding: .5rem;
+  font-size: 1rem;
+  line-height: 1rem;
+  font-family: monospace;
+}
