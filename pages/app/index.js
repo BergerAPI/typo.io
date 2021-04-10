@@ -9,12 +9,10 @@ export default function App() {
       <div>
         <Input text="Loading..." author="Loading..." finish={(finishState) => {
           setState({ isFinished: true, wpm: finishState.wpm, raw: finishState.raw, accuracy: finishState.accuracy, text: finishState.text, author: finishState.author })
-          console.log("finished")
         }} />
       </div>
     )
   else {
-    console.log("rendering")
     return (
       <div>
         <h1>WPM: {state.wpm}</h1>

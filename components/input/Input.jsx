@@ -168,36 +168,33 @@ export class Input extends React.Component {
       raw: calculated.raw,
       accuracy: calculated.accuracy,
       text: this.state.fullText,
-      author: this.state.author
-    }
+      author: this.state.author,
+    };
 
     await auth.onAuthStateChanged(async (authUser) => {
       let id = randomString();
       if (authUser !== null) {
-        await db
-          .collection("stats")
-          .add({
-            displayName: authUser.displayName,
-            userUid: authUser.uid,
-            gameId: id,
-            photo: authUser.photoURL,
-            wpm: calculated.wpm,
-            accuracy: calculated.accuracy,
-            text: this.state.fullText,
-            writtenText: this.state.typedText,
-            time: this.state.time,
-            timeStamp: Date.now(),
-          })
-          .then(async () => {
-            let userDoc = await db.collection("users").doc(authUser.uid);
-            let stats = (await userDoc.get()).data().stats
-            stats.push(id)
+        await db.collection("stats").add({
+          displayName: authUser.displayName,
+          userUid: authUser.uid,
+          gameId: id,
+          photo: authUser.photoURL,
+          wpm: calculated.wpm,
+          accuracy: calculated.accuracy,
+          text: this.state.fullText,
+          writtenText: this.state.typedText,
+          time: this.state.time,
+          timeStamp: Date.now(),
+        });
 
-            await userDoc.update({
-              stats: stats,
-            });
-            this.props.finish(finishState);
-          });
+        let userDoc = await db.collection("users").doc(authUser.uid);
+        let stats = (await userDoc.get().data()).stats;
+        stats.push(id);
+
+        await userDoc.update({
+          stats: stats,
+        });
+        this.props.finish(finishState);
       } else this.props.finish(finishState);
     });
   }
