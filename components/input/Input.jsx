@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../../styles/components/Input.module.css";
 import MoonLoader from "react-spinners/MoonLoader";
 
-import { getQuote, getRandomText } from "../../util/helper.js";
+import { getQuote, getRandomText, randomString } from "../../util/helper.js";
 import { initSounds, playSound } from "../../util/sound/sound-handler.js";
 import { calculate } from "../../util/logic/type-logic.js";
 import { db, auth } from "../../util/firebase/firebase.js";
@@ -164,12 +164,14 @@ export class Input extends React.Component {
     );
 
     await auth.onAuthStateChanged(async (authUser) => {
+      let id = randomString();
       if (authUser !== null) {
         await db
           .collection("stats")
           .add({
             displayName: authUser.displayName,
             userUid: authUser.uid,
+            gameId: id,
             photo: authUser.photoURL,
             wpm: calculated.wpm,
             accuracy: calculated.accuracy,
@@ -178,7 +180,16 @@ export class Input extends React.Component {
             time: this.state.time,
             timeStamp: Date.now(),
           })
-          .then(() => this.props.finish());
+          .then(async () => {
+            let userDoc = await db.collection("users").doc(authUser.uid);
+            let stats = (await userDoc.get()).data().stats
+            stats.push(id)
+
+            await userDoc.update({
+              stats: stats,
+            });
+            this.props.finish();
+          });
       } else this.props.finish();
     });
   }

@@ -29,6 +29,17 @@ export default function Register() {
               displayName: email.split("@")[0],
               photoURL: "https://firebasestorage.googleapis.com/v0/b/typo-io.appspot.com/o/default-profile.png?alt=media&token=984243f8-947d-4f41-945a-e9fbd3d0825f"
             })
+
+            await db.collection("users").doc(user.uid).set({
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+              banned: false,
+              badges: [],
+              stats: [],
+              nameChanges: [],
+              pictureChanges: [],
+              keyboard: "😭"
+            })
         })
           .catch((error) => {
             var errorMessage = error.message;

@@ -34,6 +34,22 @@ export async function getRandomText(language) {
 }
 
 /**
+ * Creates a random string
+ * @param {number} length 
+ * @returns random string
+ */
+export function randomString(length = 64) {
+    let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
+
+    let str = '';
+    for (let i = 0; i < length; i++) {
+        str += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return str;
+}
+
+/**
  * Packages a array into parts
  * @param {strign} text 
  * @param {number} count 
