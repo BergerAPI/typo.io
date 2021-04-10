@@ -55,6 +55,8 @@ export default function Account() {
                                 if (doc.data().userUid === authUser.uid)
                                     db.collection("stats").doc(doc.id).update({ displayName: username })
                             });
+                        }else {
+                            alert("Your username isn't following the name conventions. Your name should only contain letters from a to z in uppercase and lower case and numbers from 0 to 9. Also it should be in the lenght from 3 to 12.")
                         }
                     });
                 }} type="submit">Save</button>

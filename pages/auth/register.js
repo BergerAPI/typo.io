@@ -1,4 +1,4 @@
-import { auth, registerWithGoogle } from "../../util/firebase/firebase"
+import { auth, registerWithGoogle, db } from "../../util/firebase/firebase"
 import Router from "next/router";
 
 export default function Register() {
@@ -27,7 +27,7 @@ export default function Register() {
 
             await user.updateProfile({
               displayName: email.split("@")[0],
-              photoURL: "https://www.knack.com/images/about/default-profile.png"
+              photoURL: "https://firebasestorage.googleapis.com/v0/b/typo-io.appspot.com/o/default-profile.png?alt=media&token=984243f8-947d-4f41-945a-e9fbd3d0825f"
             })
         })
           .catch((error) => {
