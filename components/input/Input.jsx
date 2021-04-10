@@ -6,6 +6,7 @@ import { getQuote, getRandomText, randomString } from "../../util/helper.js";
 import { initSounds, playSound } from "../../util/sound/sound-handler.js";
 import { calculate } from "../../util/logic/type-logic.js";
 import { db, auth } from "../../util/firebase/firebase.js";
+import { ThemeProvider } from "@emotion/react";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -162,6 +163,13 @@ export class Input extends React.Component {
       this.state.errorCount,
       this.state.words
     );
+    let finishState = {
+      wpm: calculated.wpm,
+      raw: calculated.raw,
+      accuracy: calculated.accuracy,
+      text: this.state.fullText,
+      author: this.state.author
+    }
 
     await auth.onAuthStateChanged(async (authUser) => {
       let id = randomString();
@@ -188,9 +196,9 @@ export class Input extends React.Component {
             await userDoc.update({
               stats: stats,
             });
-            this.props.finish();
+            this.props.finish(finishState);
           });
-      } else this.props.finish();
+      } else this.props.finish(finishState);
     });
   }
 
