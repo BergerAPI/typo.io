@@ -44,7 +44,7 @@ export default function Account() {
                     let username = document.querySelector("input[name='username']").value
 
                     await auth.onAuthStateChanged(async (authUser) => {
-                        if (authUser !== null) {
+                        if (authUser !== null && username.length >= 3 && username.length <= 12 && username.match(/^[A-Za-z]\\w{5,29}$/)) {
                             await authUser.updateProfile({
                                 displayName: username
                             })
