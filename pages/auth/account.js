@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { auth } from "../../util/firebase/firebase"
+import { auth, db } from "../../util/firebase/firebase"
 
 export default function Account() {
     if (typeof window !== 'undefined') {
@@ -22,10 +22,18 @@ export default function Account() {
                 let link = document.querySelector("input[name='link']").value
 
                 await auth.onAuthStateChanged(async (authUser) => {
-                    if (authUser !== null)
+                    if (authUser !== null) {
                         await authUser.updateProfile({
                             photoURL: link
                         })
+
+                        const snapshot = await db.collection("stats").get();
+
+                        snapshot.docs.forEach((doc) => {
+                            if (doc.data().userUid === authUser.uid)
+                                db.collection("stats").doc(doc.id).update({ photo: link })
+                        });
+                    }
                 });
             }} type="submit">Save</button>
         </>

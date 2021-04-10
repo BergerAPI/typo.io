@@ -151,7 +151,8 @@ export class Input extends React.Component {
       index: this.state.index + 1,
     });
 
-    if (this.state.index + 1 > this.state.fullText.length) await this.handleFinish();
+    if (this.state.index + 1 > this.state.fullText.length)
+      await this.handleFinish();
   }
 
   async handleFinish() {
@@ -164,9 +165,11 @@ export class Input extends React.Component {
 
     await auth.onAuthStateChanged(async (authUser) => {
       if (authUser !== null) {
-        await db.collection("stats")
+        await db
+          .collection("stats")
           .add({
             displayName: authUser.displayName,
+            userUid: authUser.uid,
             photo: authUser.photoURL,
             wpm: calculated.wpm,
             accuracy: calculated.accuracy,
@@ -174,12 +177,9 @@ export class Input extends React.Component {
             writtenText: this.state.typedText,
             time: this.state.time,
             timeStamp: Date.now(),
-          }).then(() => {
-            window.location.reload();
           })
-      }else {
-        window.location.reload();
-      }
+          .then(() => this.props.finish());
+      } else this.props.finish();
     });
   }
 
