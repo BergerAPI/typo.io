@@ -6,7 +6,6 @@ import { getQuote, getRandomText, randomString } from "../../util/helper.js";
 import { initSounds, playSound } from "../../util/sound/sound-handler.js";
 import { calculate } from "../../util/logic/type-logic.js";
 import { db, auth } from "../../util/firebase/firebase.js";
-import { ThemeProvider } from "@emotion/react";
 
 export class Input extends React.Component {
   constructor(props) {
@@ -16,8 +15,6 @@ export class Input extends React.Component {
       index: 0,
       typedText: "",
       remainingText: this.props.text,
-      visibleRemainingText: "",
-      visibleText: "",
       fullText: this.props.text,
       author: this.props.author,
       errorCount: 0,
@@ -29,9 +26,8 @@ export class Input extends React.Component {
       unit: undefined,
       timeText: "",
       fontSize: "15px",
+      restartSelected: false,
     };
-
-    this.visibleTextRef = React.createRef();
 
     this.state.fullText.split(" ").forEach((element) => {
       this.state.words.push(element);
@@ -72,6 +68,12 @@ export class Input extends React.Component {
           this.handleValidInput(event);
         else if (event.keyCode == 8 && this.state.index > 0)
           this.handleBackspace();
+        else if (event.keyCode == 13 && this.state.restartSelected)
+          window.location.reload();
+        else if (event.keyCode == 9) {
+          event.preventDefault();
+          this.setState({ restartSelected: true });
+        }
       },
       false
     );
@@ -121,14 +123,16 @@ export class Input extends React.Component {
     this.setState({
       remainingText:
         this.state.fullText[this.state.index - 1] + this.state.remainingText,
-    });
-    this.setState({ index: (this.state.index -= 1) });
-    this.setState({
+      index: (this.state.index -= 1),
       typedText: this.state.typedText.substring(
         0,
         this.state.typedText.length - 1
       ),
     });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   async handleValidInput(event) {
@@ -144,12 +148,13 @@ export class Input extends React.Component {
     }
 
     this.state.typedText += event.key;
-    this.state.remainingText = this.state.remainingText.slice(
-      1,
-      this.state.remainingText.length
-    );
     this.setState({
+      restartSelected: false,
       index: this.state.index + 1,
+      remainingText: this.state.remainingText.slice(
+        1,
+        this.state.remainingText.length
+      ),
     });
 
     if (this.state.index + 1 > this.state.fullText.length)
@@ -190,15 +195,16 @@ export class Input extends React.Component {
         let userDoc = db.collection("users").doc(authUser.uid);
 
         userDoc.get().then((doc) => {
-          let userData = doc.data()
-          let stats = userData.stats
+          let userData = doc.data();
+          let stats = userData.stats;
           stats.push(id);
-  
-          userDoc.update({
-            stats: stats,
-          }).then(() => this.props.finish(finishState));
-        })
 
+          userDoc
+            .update({
+              stats: stats,
+            })
+            .then(() => this.props.finish(finishState));
+        });
       } else this.props.finish(finishState);
     });
   }
