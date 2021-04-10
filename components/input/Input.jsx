@@ -188,7 +188,8 @@ export class Input extends React.Component {
         });
 
         let userDoc = await db.collection("users").doc(authUser.uid);
-        let stats = (await userDoc.get().data()).stats;
+        let userData = (await (await userDoc.get()).data())
+        let stats = userData.stats
         stats.push(id);
 
         await userDoc.update({
