@@ -187,15 +187,18 @@ export class Input extends React.Component {
           timeStamp: Date.now(),
         });
 
-        let userDoc = await db.collection("users").doc(authUser.uid);
-        let userData = (await (await userDoc.get()).data())
-        let stats = userData.stats
-        stats.push(id);
+        let userDoc = db.collection("users").doc(authUser.uid);
 
-        await userDoc.update({
-          stats: stats,
-        });
-        this.props.finish(finishState);
+        userDoc.get().then((doc) => {
+          let userData = doc.data()
+          let stats = userData.stats
+          stats.push(id);
+  
+          userDoc.update({
+            stats: stats,
+          }).then(() => this.props.finish(finishState));
+        })
+
       } else this.props.finish(finishState);
     });
   }
