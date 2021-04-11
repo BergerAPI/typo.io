@@ -1,4 +1,4 @@
-import { auth, registerWithGoogle, db } from "../../util/firebase/firebase"
+import { auth, registerWithGoogle, createDatabaseUser, db } from "../../util/firebase/firebase"
 import Router from "next/router";
 
 export default function Register() {
@@ -20,31 +20,10 @@ export default function Register() {
       <button style={inputCss} onClick={async () => {
         let email = document.querySelector("input[name='email']").value
         let password = document.querySelector("input[name='password']").value
-
+        
         await auth.createUserWithEmailAndPassword(email, password)
-          .then(async (cred) => {
-            let user = cred.user
-
-            await user.updateProfile({
-              displayName: email.split("@")[0],
-              photoURL: "https://firebasestorage.googleapis.com/v0/b/typo-io.appspot.com/o/default-profile.png?alt=media&token=984243f8-947d-4f41-945a-e9fbd3d0825f"
-            })
-
-            await db.collection("users").doc(user.uid).set({
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-              banned: false,
-              badges: [],
-              stats: [],
-              nameChanges: [],
-              pictureChanges: [],
-              keyboard: "😭"
-            })
-          })
-          .catch((error) => {
-            var errorMessage = error.message;
-            console.log(errorMessage)
-          });
+          .then(async (cred) => createDatabaseUser(cred.user))
+          .catch((error) => alert("An error occured: " + error.message));
 
         Router.push("/app")
       }} type="submit">Submit</button>
@@ -53,22 +32,15 @@ export default function Register() {
         let user = await registerWithGoogle()
 
         if (user !== undefined) {
-          await user.updateProfile({
-            displayName: user.email.split("@")[0],
-            photoURL: "https://firebasestorage.googleapis.com/v0/b/typo-io.appspot.com/o/default-profile.png?alt=media&token=984243f8-947d-4f41-945a-e9fbd3d0825f"
-          })
 
-          await db.collection("users").doc(user.uid).set({
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-            banned: false,
-            badges: [],
-            stats: [],
-            nameChanges: [],
-            pictureChanges: [],
-            keyboard: "😭"
-          })
-          
+          // I need a snapshot here to check if the document exists 😭
+          let existingDoc = await db.collection("users").doc(user.uid).get()
+
+          // The user is already authed. No need to create
+          // a new database entry.
+          if (!existingDoc.exists)
+            await createDatabaseUser(user)
+
           Router.push("/app")
         }
       }} type="submit">Register with Google</button>
