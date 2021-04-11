@@ -10,12 +10,44 @@ export class UserList extends React.Component {
 
     this.state = {
       users: [],
+      dailyUsers: [],
     };
+  }
+
+  statisticToHtml(item) {
+    var sec = Math.round(((Date.now() - item.timeStamp) / 1000) * 1) / 1;
+    var mind = sec % (60 * 60);
+    var minutes = Math.floor(mind / 60);
+
+    var secd = mind % 60;
+    var seconds = Math.ceil(secd);
+
+    return (
+      <User
+        title={item.displayName}
+        description={
+          "WPM: " +
+          item.wpm +
+          " Accuracy: " +
+          item.accuracy +
+          "% Time: " +
+          Math.round((item.time / 1000) * 1) / 1 +
+          "s, " +
+          minutes +
+          "m " +
+          seconds +
+          "s ago"
+        }
+        photo={item.photo}
+      />
+    );
   }
 
   async componentDidMount() {
     let prevUsers = [];
     let users = [];
+    let dailyUsers = [];
+
     const snapshot = await db.collection("stats").get();
 
     snapshot.docs.map((doc, index) => {
@@ -27,7 +59,7 @@ export class UserList extends React.Component {
         time: data.time,
         timeStamp: data.timeStamp,
         photo: data.photo,
-        displayName: data.displayName
+        displayName: data.displayName,
       });
     });
 
@@ -40,51 +72,56 @@ export class UserList extends React.Component {
     });
 
     prevUsers.forEach((item, index) => {
-      var sec = Math.round(((Date.now() - item.timeStamp) / 1000) * 1) / 1;
-      var mind = sec % (60 * 60);
-      var minutes = Math.floor(mind / 60);
-
-      var secd = mind % 60;
-      var seconds = Math.ceil(secd);
-
-      if (index <= 4)
-        users.push(
-          <User
-            title={item.displayName}
-            description={
-              "WPM: " +
-              item.wpm +
-              " Accuracy: " +
-              item.accuracy +
-              "% Time: " +
-              Math.round((item.time / 1000) * 1) / 1 +
-              "s, " +
-              minutes +
-              "m " +
-              seconds +
-              "s ago"
-            }
-            photo={item.photo}
-          />
-        );
+      if (index <= 4) users.push(this.statisticToHtml(item));
     });
+
+    prevUsers
+      .filter((user) => {
+        const today = new Date();
+        const date = new Date(user.timeStamp);
+
+        return (
+          date.getDate() === today.getDate() &&
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear()
+        );
+      })
+      .forEach((item, index) => {
+        if (index <= 4) dailyUsers.push(this.statisticToHtml(item));
+      });
 
     this.setState({
       users: users,
+      dailyUsers: dailyUsers,
     });
   }
 
   render() {
-    return (
-      <>
-        {this.state.users}
+    let paragraphStyle = {
+      display: "flex",
+      justifyContent: "center",
+      "font-family": "monospace",
+      fontSize: "200%",
+    };
 
-        {(() => {
-          if (this.state.users.length === 0) {
-            return <MoonLoader color={"#FFF"} loading={true} />;
-          }
-        })()}
-      </>
-    );
+    if (this.state.users.length === 0)
+      return <MoonLoader color={"#FFF"} loading={true} />;
+    else
+      return (
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <div style={{ display: "inline-block" }}>
+            <p style={paragraphStyle}>Alltime</p>
+            {this.state.users}
+          </div>
+          <div style={{ display: "inline-block" }}>
+            <p style={paragraphStyle}>Daily</p>
+            {this.state.dailyUsers}
+          </div>
+        </div>
+      );
   }
 }

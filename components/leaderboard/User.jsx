@@ -23,9 +23,6 @@ export class User extends React.Component {
           <p className={styles.title}>{this.props.title}</p>
           <p className={styles.description}>{this.props.description}</p>
         </div>
-        <div className={styles.box}>
-          
-        </div>
       </div>
     );
   }
