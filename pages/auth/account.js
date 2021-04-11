@@ -22,6 +22,11 @@ export default function Account() {
                 <button onClick={async () => {
                     let link = document.querySelector("input[name='link']").value
 
+                    if(!link.match(/\.(jpg|gif|png)$/)) {
+                        alert("link is not an image. Please use file format .jpg, .png, .gif")
+                        return
+                    }
+
                     await auth.onAuthStateChanged(async (authUser) => {
                         if (authUser !== null) {
                             await authUser.updateProfile({

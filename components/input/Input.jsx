@@ -26,7 +26,11 @@ export class Input extends React.Component {
       unit: undefined,
       timeText: "",
       fontSize: "15px",
+      font: "Arial",
       restartSelected: false,
+      wpmData: [],
+      rawData: [],
+      number: [],
     };
   }
 
@@ -42,6 +46,28 @@ export class Input extends React.Component {
       this.setState({
         time: Date.now() - this.state.start,
       });
+
+      if ((Math.round((this.state.time / 1000) * 1) / 1) % 1 === 0) {
+        let calculated = calculate(
+          this.state.time,
+          this.state.typedText,
+          this.state.errorCount,
+          this.state.words
+        );
+
+        if (
+          !this.state.number.includes(
+            Math.round((this.state.time / 1000) * 1) / 1
+          )
+        ) {
+          this.state.wpmData.push(calculated.wpm);
+          this.state.rawData.push(calculated.raw);
+          this.state.number.push(Math.round((this.state.time / 1000) * 1) / 1);
+
+          this.setState({ wpmData: this.state.wpmData });
+        }
+      }
+
       if (localStorage.getItem("mode")) {
         if (localStorage.getItem("mode") !== "Time") {
           if (
@@ -79,6 +105,11 @@ export class Input extends React.Component {
       localStorage.setItem("font-size", "15px");
 
     this.setState({ fontSize: localStorage.getItem("font-size") });
+
+    if (!localStorage.getItem("font-family"))
+      localStorage.setItem("font-family", "Arial");
+
+    this.setState({ font: localStorage.getItem("font-family") });
 
     if (
       localStorage.getItem("input_mode")
@@ -160,12 +191,20 @@ export class Input extends React.Component {
       this.state.errorCount,
       this.state.words
     );
+
+    this.state.wpmData.push(calculated.wpm);
+    this.state.rawData.push(calculated.raw);
+
+    this.setState({ wpmData: this.state.wpmData });
+
     let finishState = {
       wpm: calculated.wpm,
       raw: calculated.raw,
       accuracy: calculated.accuracy,
       text: this.state.fullText,
       author: this.state.author,
+      wpmData: this.state.wpmData,
+      rawData: this.state.rawData
     };
 
     await auth.onAuthStateChanged(async (authUser) => {
@@ -297,7 +336,12 @@ export class Input extends React.Component {
                   </p>
                 </div>
                 <div className={styles.text}>
-                  <p style={{ fontSize: this.state.fontSize }}>
+                  <p
+                    style={{
+                      fontSize: this.state.fontSize,
+                      fontFamily: this.state.font,
+                    }}
+                  >
                     {typed}
                     {remaining}
                   </p>
