@@ -1,5 +1,4 @@
 
-
 /**
  * Calculates the wpm and the accuracy
  * @param {number} time 

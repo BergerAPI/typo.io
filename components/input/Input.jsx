@@ -22,18 +22,17 @@ export class Input extends React.Component {
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZöüäß.?!;-:,'\" ",
       time: 0.0,
       start: 0.0,
-      words: [],
+      words: this.props.text.split(" "),
       unit: undefined,
       timeText: "",
       fontSize: "15px",
       restartSelected: false,
     };
-
-    this.state.fullText.split(" ").forEach((element) => {
-      this.state.words.push(element);
-    });
   }
 
+  /**
+   * Starts the timer to calculate the wpm for example
+   */
   startTimer() {
     this.setState({
       time: this.state.time,
@@ -57,27 +56,12 @@ export class Input extends React.Component {
     }, 1);
   }
 
-  async componentDidMount() {
-    console.log("Component mounted.");
-    initSounds();
-
-    document.addEventListener(
-      "keydown",
-      async (event) => {
-        if (this.state.validLetters.includes(event.key))
-          this.handleValidInput(event);
-        else if (event.keyCode == 8 && this.state.index > 0)
-          this.handleBackspace();
-        else if (event.keyCode == 13 && this.state.restartSelected)
-          window.location.reload();
-        else if (event.keyCode == 9) {
-          event.preventDefault();
-          this.setState({ restartSelected: true });
-        }
-      },
-      false
-    );
-
+  /**
+   * Sets all states that are important for the component
+   * TODO: Clean this shitty peace of code and
+   * TODO: use a json object in the localstorage
+   */
+  async setupConfig() {
     let language = localStorage.getItem("language")
       ? localStorage.getItem("language")
       : "english";
@@ -119,6 +103,10 @@ export class Input extends React.Component {
     }
   }
 
+  /**
+   * Handles a input with the keyCode of the backspace
+   * @see http://javascriptkeycode.com
+   */
   handleBackspace() {
     this.setState({
       remainingText:
@@ -131,10 +119,10 @@ export class Input extends React.Component {
     });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
+  /**
+   * Handles a input with a key that's not shift, command etc.
+   * @see http://javascriptkeycode.com
+   */
   async handleValidInput(event) {
     if (this.state.index == 0) this.startTimer();
 
@@ -161,6 +149,10 @@ export class Input extends React.Component {
       await this.handleFinish();
   }
 
+  /**
+   * Handles the end of the game. Executed when the time runs out or the
+   * User reaches the end of the text.
+   */
   async handleFinish() {
     let calculated = calculate(
       this.state.time,
@@ -178,6 +170,7 @@ export class Input extends React.Component {
 
     await auth.onAuthStateChanged(async (authUser) => {
       let id = randomString();
+
       if (authUser !== null) {
         await db.collection("stats").add({
           displayName: authUser.displayName,
@@ -209,6 +202,45 @@ export class Input extends React.Component {
     });
   }
 
+  /**
+   * @see https://reactjs.org/docs/react-component.html
+   */
+  async componentDidMount() {
+    initSounds();
+
+    // Im basically using the "normal" javascript way to detect
+    // a click because the react way is shitty and can't replace
+    // this method.
+    document.addEventListener(
+      "keydown",
+      async (event) => {
+        if (this.state.validLetters.includes(event.key))
+          this.handleValidInput(event);
+        else if (event.keyCode == 8 && this.state.index > 0)
+          this.handleBackspace();
+        else if (event.keyCode == 13 && this.state.restartSelected)
+          window.location.reload();
+        else if (event.keyCode == 9) {
+          event.preventDefault();
+          this.setState({ restartSelected: true });
+        }
+      },
+      false
+    );
+
+    await this.setupConfig();
+  }
+
+  /**
+   * @see https://reactjs.org/docs/react-component.html
+   */
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  /**
+   * @see https://reactjs.org/docs/react-component.html
+   */
   render() {
     let calculated = calculate(
       this.state.time,
