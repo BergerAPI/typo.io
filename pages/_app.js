@@ -5,10 +5,12 @@ import BaseLayout from "../components/layout/Base-Layout"
  * The main method 😍
  */
 function Typo({ Component, pageProps }) {
+    const Layout = Component.Layout || BaseLayout;
+
     return (
-        <BaseLayout>
+        <Layout>
             <Component {...pageProps} />
-        </BaseLayout>
+        </Layout>
     )
 }
 
