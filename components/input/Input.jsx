@@ -292,19 +292,25 @@ export class Input extends React.Component {
     let remaining = [];
 
     for (let i = 0; i < this.state.fullText.length; i++)
-      remaining.push(
-        <a className={styles.remaining}>{this.state.remainingText[i]}</a>
-      );
+      if (i !== 0)
+        remaining.push(
+          <a className={styles.remaining}>{this.state.remainingText[i]}</a>
+        );
+      else
+        remaining.push(
+          <a
+            style={{ "background-color": "rgb(100, 100, 100)" }}
+            className={styles.remaining}
+          >
+            {this.state.remainingText[i]}
+          </a>
+        );
 
     for (let i = 0; i < this.state.typedText.length; i++) {
       let value = this.state.typedText[i];
       if (value !== this.state.fullText[i])
         typed.push(<a className={styles.wrong}>{this.state.fullText[i]}</a>);
-      else {
-        if (this.state.index - 1 === i)
-          typed.push(<a style={{ "background-color": "grey" }}>{value}</a>);
-        else typed.push(<a>{value}</a>);
-      }
+      else typed.push(<a>{value}</a>);
     }
 
     return (
