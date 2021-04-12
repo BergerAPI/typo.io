@@ -39,6 +39,7 @@ export class UserList extends React.Component {
           "s ago"
         }
         photo={item.photo}
+        badges={[]}
       />
     );
   }
@@ -113,11 +114,11 @@ export class UserList extends React.Component {
             display: "flex",
           }}
         >
-          <div style={{ display: "inline-block" }}>
+          <div>
             <p style={paragraphStyle}>Alltime</p>
             {this.state.users}
           </div>
-          <div style={{ display: "inline-block" }}>
+          <div>
             <p style={paragraphStyle}>Daily</p>
             {this.state.dailyUsers}
           </div>

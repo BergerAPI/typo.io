@@ -39,7 +39,7 @@ export default function App() {
             },
             {
               label: "Raw",
-              data: state.rawData,
+              data: state.raw,
               borderWidth: 1,
               fill: true,
               borderColor: "grey",

@@ -204,7 +204,7 @@ export class Input extends React.Component {
       text: this.state.fullText,
       author: this.state.author,
       wpmData: this.state.wpmData,
-      rawData: this.state.rawData
+      rawData: this.state.rawData,
     };
 
     await auth.onAuthStateChanged(async (authUser) => {
@@ -301,7 +301,9 @@ export class Input extends React.Component {
       if (value !== this.state.fullText[i])
         typed.push(<a className={styles.wrong}>{this.state.fullText[i]}</a>);
       else {
-        typed.push(<a>{value}</a>);
+        if (this.state.index - 1 === i)
+          typed.push(<a style={{ "background-color": "grey" }}>{value}</a>);
+        else typed.push(<a>{value}</a>);
       }
     }
 

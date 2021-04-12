@@ -7,6 +7,11 @@ export class User extends React.Component {
   }
 
   render() {
+    let list = [];
+    this.props.badges.forEach((badge) => {
+      list.push(<p style={{color: "black" }}>{badge}</p>);
+    });
+
     return (
       <div className={styles.content}>
         <img
@@ -15,12 +20,17 @@ export class User extends React.Component {
             height: "33px",
             margin: "15px",
             borderRadius: "33px",
-            backgroundColor: "#FFF"
+            backgroundColor: "#FFF",
           }}
           src={this.props.photo}
         />
         <div>
-          <p className={styles.title}>{this.props.title}</p>
+          <p className={styles.title} style={{display: "flex", marginLeft: "3px"}}>
+            {this.props.title}
+            <div style={{ borderRadius: "3px", backgroundColor: "yellow" }}>
+              {list}
+            </div>
+          </p>
           <p className={styles.description}>{this.props.description}</p>
         </div>
       </div>
