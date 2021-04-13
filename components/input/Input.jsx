@@ -32,6 +32,7 @@ export class Input extends React.Component {
       rawData: [],
       number: [],
     };
+    this.timer = undefined
   }
 
   /**
@@ -181,6 +182,35 @@ export class Input extends React.Component {
   }
 
   /**
+   * Handles a restart request by the user, and basically just 
+   * sets all states to the default and inits the config
+   */
+  handRestart() {
+    if(this.timer) 
+      clearInterval(this.timer)
+
+    this.setState({
+      index: 0,
+      typedText: "",
+      remainingText: this.props.text,
+      fullText: this.props.text,
+      author: this.props.author,
+      errorCount: 0,
+      time: 0.0,
+      start: 0.0,
+      timeText: "",
+      fontSize: "15px",
+      font: "Arial",
+      restartSelected: false,
+      wpmData: [],
+      rawData: [],
+      number: []
+    })
+
+    this.setupConfig()
+  }
+
+  /**
    * Handles the end of the game. Executed when the time runs out or the
    * User reaches the end of the text.
    */
@@ -258,7 +288,7 @@ export class Input extends React.Component {
         else if (event.keyCode == 8 && this.state.index > 0)
           this.handleBackspace();
         else if (event.keyCode == 13 && this.state.restartSelected)
-          window.location.reload();
+          this.handRestart()
         else if (event.keyCode == 9) {
           event.preventDefault();
           this.setState({ restartSelected: true });

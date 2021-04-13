@@ -13,7 +13,9 @@ export class User extends React.Component {
     });
 
     return (
-      <div className={styles.content}>
+      <div className={styles.content} style={{
+        "margin": "10px"
+      }}>
         <img
           style={{
             width: "33px",
