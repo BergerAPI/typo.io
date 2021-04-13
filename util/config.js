@@ -27,14 +27,9 @@ export class Config {
     save() {
         localStorage.clear()
 
-        if (this.currentConfig.size !== 0) {
+        if (this.currentConfig.size !== 0)
             localStorage.setItem("config", JSON.stringify(Object.fromEntries(this.currentConfig)))
-
-            console.log("gg ")
-            console.log(this.currentConfig)
-        } else {
-
-            console.log("fff")
+        else {
 
             // Loading the default config here
             this.currentConfig.set("inputMode", "words")

@@ -22,7 +22,7 @@ export default function Login() {
                     let password = document.querySelector("input[name='password']").value
 
                     auth.signInWithEmailAndPassword(email, password).then((userCredential) => {
-                        Router.push("/app")
+                        Router.push("/")
                     })
                         .catch((error) => {
                             var errorMessage = error.message;

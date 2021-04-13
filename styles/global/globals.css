@@ -46,4 +46,5 @@ button {
   font-size: 1rem;
   line-height: 1rem;
   font-family: monospace;
+  cursor: pointer;
 }

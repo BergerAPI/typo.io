@@ -25,7 +25,7 @@ export default function Register() {
           .then(async (cred) => createDatabaseUser(cred.user))
           .catch((error) => alert("An error occured: " + error.message));
 
-        Router.push("/app")
+        Router.push("/")
       }} type="submit">Submit</button>
 
       <button style={inputCss} onClick={async () => {
@@ -41,7 +41,7 @@ export default function Register() {
           if (!existingDoc.exists)
             await createDatabaseUser(user)
 
-          Router.push("/app")
+          Router.push("/")
         }
       }} type="submit">Register with Google</button>
     </div>
