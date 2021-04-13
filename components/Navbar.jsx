@@ -33,11 +33,8 @@ export class Navbar extends React.Component {
           </div>
 
           <div className={navStyle.links}>
-            <Link href="/">
-              <a className={navStyle.link}>Home</a>
-            </Link>
             <Link href="/credits">
-              <a className={navStyle.link}>Credits</a>
+              <a className={navStyle.link}>Information</a>
             </Link>
             <Link href="/config">
               <a className={navStyle.link}>Config</a>
@@ -50,7 +47,7 @@ export class Navbar extends React.Component {
                 {this.state.loginState === "account" ? "Account" : "Login"}
               </a>
             </Link>
-            <Link href="/app">
+            <Link href="/">
               <a className={navStyle.button}>Play now</a>
             </Link>
           </div>
