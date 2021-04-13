@@ -142,13 +142,11 @@ export class Input extends React.Component {
   async handleValidInput(event) {
     if (this.state.index == 0) this.startTimer();
 
-    if (this.config.get("clickSounds"))
-      playSound("click_sounds");
+    if (this.config.get("clickSounds")) playSound("click_sounds");
 
     if (event.key !== this.state.fullText[this.state.index]) {
       this.setState({ errorCount: this.state.errorCount + 1 });
-      if (this.config.get("errorSounds"))
-        playSound("error_sounds");
+      if (this.config.get("errorSounds")) playSound("error_sounds");
     }
 
     this.state.typedText += event.key;
@@ -323,7 +321,7 @@ export class Input extends React.Component {
       let value = this.state.typedText[i];
       if (value !== this.state.fullText[i])
         typed.push(<a className={styles.wrong}>{this.state.fullText[i]}</a>);
-      else typed.push(<a>{value}</a>);
+      else typed.push(<a className={styles.typed}>{value}</a>);
     }
 
     return (
@@ -367,7 +365,12 @@ export class Input extends React.Component {
                     {remaining}
                   </p>
                 </div>
-                <p className={styles.author}>~ {this.state.author}</p>
+                <p
+                  className={styles.author}
+                  style={{ fontFamily: this.state.font }}
+                >
+                  ~ {this.state.author}
+                </p>
               </div>
             );
         })()}

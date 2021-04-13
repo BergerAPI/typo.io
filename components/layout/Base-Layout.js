@@ -11,7 +11,6 @@ const BaseLayout = ({ children }) => {
             <Head>
                 <title>typo.io</title>
                 <link rel="icon" href="/favicon.ico" />
-                <meta name="color-scheme" content="dark light" />
             </Head>
 
             <Navbar />

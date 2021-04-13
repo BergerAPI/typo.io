@@ -1,9 +1,13 @@
 .remaining {
-  color: rgba(128, 128, 128, 10);
+  color: var(--sub-color);
+}
+
+.typed {
+  color: var(--main-color)
 }
 
 .wrong {
-  background-color: rgb(240, 84, 84, 1);
+  background-color: var(--error-color);
 }
 
 .text {
@@ -51,6 +55,7 @@
     Bitstream Vera Sans Mono, Courier New, monospace;
   font-size: 17px;
   display: flex;
+  color: var(--text-color);
 }
 
 .timeElapsed {
