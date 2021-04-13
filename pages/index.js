@@ -21,7 +21,7 @@ export default function App() {
     )
   else {
     return (
-      <div style={{ fontFamily: "monospace", fontSize: "20px" }}>
+      <div style={{ fontFamily: "monospace", fontSize: "20px", color: 'white' }}>
         <p>WPM: {state.wpm}</p>
         <p>Raw: {state.raw}</p>
         <p>Accuracy: {state.accuracy}</p>

@@ -8,6 +8,7 @@
 }
 
 .content {
+  color: var(--text-color);
   width: 75%;
   height: auto;
   display: flex;
@@ -19,6 +20,7 @@
 .content .box {
   margin-left: auto;
   margin-right: 0;
+  color: var(--text-color);
 }
 
 .box p {

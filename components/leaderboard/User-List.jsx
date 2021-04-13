@@ -103,6 +103,7 @@ export class UserList extends React.Component {
       justifyContent: "center",
       "font-family": "monospace",
       fontSize: "200%",
+      color: "var(--text-color)"
     };
 
     if (this.state.users.length === 0)

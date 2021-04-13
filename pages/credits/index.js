@@ -5,7 +5,7 @@ export default function Home() {
     return (
         <div className={styles.container}>
                 <h1 className={styles.title}>Special Thanks To:</h1>
-
+            
                 <p className={styles.user}>
                     Vercel with <a href="https://www.nextjs.com/" target="_blank" className={secondaryStyle.product}>NextJS</a>
                 </p>

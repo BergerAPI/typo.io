@@ -54,6 +54,7 @@ button {
   border: none;
   border-radius: 0.25rem;
   background: rgba(0, 0, 0, 0.1);
+  color: white;
   padding: 0.5rem;
   font-size: 1rem;
   line-height: 1rem;
