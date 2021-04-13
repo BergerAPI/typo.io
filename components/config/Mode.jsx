@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles/components/config/Config.module.css";
+import { Config } from "../../util/config";
 
 export class Mode extends React.Component {
   constructor(props) {
@@ -9,12 +10,13 @@ export class Mode extends React.Component {
       values: props.values,
       currentValue: props.values[0],
     };
+    this.config = new Config()
   }
 
   componentDidMount() {
-    if (localStorage.getItem(this.props.item))
-      this.setState({ currentValue: localStorage.getItem(this.props.item) });
-    else localStorage.setItem(this.props.item, this.state.values[0]);
+    this.config.load()
+
+    this.setState({ currentValue: this.config.get(this.props.item) });
   }
 
   render() {
@@ -26,7 +28,7 @@ export class Mode extends React.Component {
           }
           onClick={() => {
             this.setState({ currentValue: value });
-            localStorage.setItem(this.props.item, value);
+            this.config.set(this.props.item, value);
           }}
         >
           {value}

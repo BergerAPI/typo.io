@@ -7,6 +7,8 @@ import { initSounds, playSound } from "../../util/sound/sound-handler.js";
 import { calculate } from "../../util/logic/type-logic.js";
 import { db, auth } from "../../util/firebase/firebase.js";
 
+import { Config } from "../../util/config.js";
+
 export class Input extends React.Component {
   constructor(props) {
     super(props);
@@ -32,7 +34,8 @@ export class Input extends React.Component {
       rawData: [],
       number: [],
     };
-    this.timer = undefined
+    this.timer = undefined;
+    this.config = new Config();
   }
 
   /**
@@ -69,15 +72,13 @@ export class Input extends React.Component {
         }
       }
 
-      if (localStorage.getItem("mode")) {
-        if (localStorage.getItem("mode") !== "Time") {
-          if (
-            this.state.time >=
-            parseInt(localStorage.getItem("mode").substring(0, 2)) * 1000
-          ) {
-            clearInterval(this.timer);
-            await this.handleFinish();
-          }
+      if (this.config.get("mode") !== "Time") {
+        if (
+          this.state.time >=
+          parseInt(this.config.get("mode").substring(0, 2)) * 1000
+        ) {
+          clearInterval(this.timer);
+          await this.handleFinish();
         }
       }
     }, 1);
@@ -85,38 +86,21 @@ export class Input extends React.Component {
 
   /**
    * Sets all states that are important for the component
-   * TODO: Clean this shitty peace of code and
-   * TODO: use a json object in the localstorage
    */
   async setupConfig() {
-    let language = localStorage.getItem("language")
-      ? localStorage.getItem("language")
-      : "english";
+    let language = this.config.get("language");
 
-    this.state.unit = localStorage.getItem("unit")
-      ? localStorage.getItem("unit")
-      : "WPM";
+    this.state.unit = this.config.get("unit");
 
-    if (!localStorage.getItem("mode")) localStorage.setItem("mode", "15s");
+    if (this.config.get("mode") !== "Text")
+      this.setState({ timeText: " / " + this.config.get("mode") });
 
-    if (localStorage.getItem("mode") !== "Text")
-      this.setState({ timeText: " / " + localStorage.getItem("mode") });
+    this.setState({
+      fontSize: this.config.get("fontSize"),
+      font: this.config.get("fontFamily"),
+    });
 
-    if (!localStorage.getItem("font-size"))
-      localStorage.setItem("font-size", "15px");
-
-    this.setState({ fontSize: localStorage.getItem("font-size") });
-
-    if (!localStorage.getItem("font-family"))
-      localStorage.setItem("font-family", "Arial");
-
-    this.setState({ font: localStorage.getItem("font-family") });
-
-    if (
-      localStorage.getItem("input_mode")
-        ? localStorage.getItem("input_mode") == "Quotes"
-        : true
-    ) {
+    if (this.config.get("inputMode") === "Quotes") {
       let quote = await getQuote(language);
 
       this.setState({
@@ -158,12 +142,12 @@ export class Input extends React.Component {
   async handleValidInput(event) {
     if (this.state.index == 0) this.startTimer();
 
-    if (localStorage.getItem("click_sounds") === "true")
+    if (this.config.get("clickSounds"))
       playSound("click_sounds");
 
     if (event.key !== this.state.fullText[this.state.index]) {
       this.setState({ errorCount: this.state.errorCount + 1 });
-      if (localStorage.getItem("error_sounds") === "true")
+      if (this.config.get("errorSounds"))
         playSound("error_sounds");
     }
 
@@ -182,12 +166,11 @@ export class Input extends React.Component {
   }
 
   /**
-   * Handles a restart request by the user, and basically just 
+   * Handles a restart request by the user, and basically just
    * sets all states to the default and inits the config
    */
   handRestart() {
-    if(this.timer) 
-      clearInterval(this.timer)
+    if (this.timer) clearInterval(this.timer);
 
     this.setState({
       index: 0,
@@ -204,10 +187,10 @@ export class Input extends React.Component {
       restartSelected: false,
       wpmData: [],
       rawData: [],
-      number: []
-    })
+      number: [],
+    });
 
-    this.setupConfig()
+    this.setupConfig();
   }
 
   /**
@@ -288,7 +271,7 @@ export class Input extends React.Component {
         else if (event.keyCode == 8 && this.state.index > 0)
           this.handleBackspace();
         else if (event.keyCode == 13 && this.state.restartSelected)
-          this.handRestart()
+          this.handRestart();
         else if (event.keyCode == 9) {
           event.preventDefault();
           this.setState({ restartSelected: true });
