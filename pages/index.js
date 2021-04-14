@@ -1,6 +1,7 @@
 import { Input } from '../components/input/Input.jsx'
 import { Line } from "react-chartjs-2";
 import React, { useState } from 'react';
+import { similarity } from '../util/logic/type-logic.js';
 
 export default function App() {
   const [state, setState] = useState({ isFinished: false, wpm: 0, raw: 0, accuracy: 0, text: "", author: "", labels: [] })
@@ -24,7 +25,8 @@ export default function App() {
       <div style={{ fontFamily: "monospace", fontSize: "20px", color: 'white' }}>
         <p>WPM: {state.wpm}</p>
         <p>Raw: {state.raw}</p>
-        <p>Accuracy: {state.accuracy}</p>
+        <p>Accuracy: {state.accuracy}%</p>
+        <p>Consentency: {similarity(state.wpmData)}%</p>
         <p>Author: {state.author}</p>
 
         <Line data={{

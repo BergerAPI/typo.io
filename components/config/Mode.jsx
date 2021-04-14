@@ -29,6 +29,9 @@ export class Mode extends React.Component {
           onClick={() => {
             this.setState({ currentValue: value });
             this.config.set(this.props.item, value);
+
+            if(this.props.onSet)
+              this.props.onSet(value)
           }}
         >
           {value}

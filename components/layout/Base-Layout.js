@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import { Navbar } from '../Navbar.jsx'
 import styles from "../../styles/components/layout/Layout.module.css"
+import { applyTheme } from '../../util/helper';
+import { Config } from '../../util/config';
 
 const BaseLayout = ({ children }) => {
 

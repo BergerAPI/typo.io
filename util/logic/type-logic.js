@@ -1,3 +1,29 @@
+/**
+ * Calculate the expected value
+ */
+export function expectancy(arrayOfValues) {
+    let u = arrayOfValues.reduce((previousValue, currentValue) => previousValue + currentValue);
+    u = u / arrayOfValues.length;
+    return u;
+}
+
+/**
+ * Calculates a consitency from a array
+ * @param {array} arrayOfValues 
+ * @returns percentage of the aray
+ */
+export function similarity(arrayOfValues) {
+    let u = expectancy(arrayOfValues);
+    let sig = [];
+    let N = 1 / arrayOfValues.length;
+
+    for (let i = 0; i < arrayOfValues.length; i++)
+        sig.push(N * (arrayOfValues[i] - u) * (arrayOfValues[i] - u));
+
+    sig = sig.reduce((previousValue, currentValue) => previousValue + currentValue);
+
+    return (100 - sig).toFixed(0).toString().replace("-", "");
+}
 
 /**
  * Calculates the wpm and the accuracy

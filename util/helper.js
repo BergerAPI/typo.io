@@ -29,8 +29,33 @@ export async function getRandomText(language) {
 
             response = text.substring(0, text.length - 1);
         });
-    console.log(response)
     return response
+}
+
+/**
+ * Sends a request to the backend to get a theme
+ * @param {string} name 
+ */
+export async function getTheme(name) {
+    let response = undefined
+    await fetch("api/theme/" + name)
+        .then((res) => res.json())
+        .then((data) => response = data);
+    return response
+}
+
+/**
+ * Loads a theme to the :root element in global css
+ * @param {JsonObject} themeData 
+ */
+export async function applyTheme(themeData) {
+    if (!themeData) return;
+    const root = document.documentElement;
+
+    Object.keys(themeData).forEach((property) => {
+        console.log(property + " - " + themeData[property])
+        root.style.setProperty(property, themeData[property])
+    });
 }
 
 /**

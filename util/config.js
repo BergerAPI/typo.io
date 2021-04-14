@@ -40,6 +40,7 @@ export class Config {
             this.currentConfig.set("mode", "15s")
             this.currentConfig.set("fontSize", "30px")
             this.currentConfig.set("fontFamily", "Source Code Pro")
+            this.currentConfig.set("theme", "old-school")
             localStorage.setItem("config", JSON.stringify(Object.fromEntries(this.currentConfig)))
         }
     }
