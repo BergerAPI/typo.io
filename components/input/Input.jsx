@@ -74,11 +74,12 @@ export class Input extends React.Component {
 
       if (this.config.get("mode") !== "Time") {
         if (
-          Date.now() - this.state.start >
+          this.state.time >
           parseInt(this.state.timeText.split(" / ")[1].substring(0, 2)) * 1000
         ) {
           clearInterval(this.timer);
           await this.handleFinish();
+          return;
         }
       }
     }, 1);
@@ -90,7 +91,7 @@ export class Input extends React.Component {
   async setupConfig() {
     let language = this.config.get("language");
 
-    await this.config.loadTheme()
+    await this.config.loadTheme();
     this.state.unit = this.config.get("unit");
 
     if (this.config.get("mode") !== "Text")
