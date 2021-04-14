@@ -4,5 +4,5 @@
   "--sub-color": "#939eae",
   "--text-color": "#e9ecf0",
   "--error-color": "rgb(240, 84, 84)",
-  "--caret-color": "rgba(244, 76, 127, 0.5)"
+  "--caret-color": "rgba(255, 255, 255, 0.1)"
 }

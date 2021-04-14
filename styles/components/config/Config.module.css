@@ -1,5 +1,5 @@
 .description {
-  color: grey;
+  color: var(--text-color);
   max-width: 350px;
   display: -webkit-box;
   -webkit-line-clamp: 9;
@@ -8,7 +8,7 @@
 }
 
 .content {
-  color: var(--text-color);
+  color: var(--sub-color);
   width: 75%;
   height: auto;
   display: flex;
@@ -37,7 +37,7 @@
 }
 
 .offBox {
-  color: grey;
+  color: var(--sub-color);
 }
 
 .onBox {

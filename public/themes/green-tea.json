@@ -1,9 +1,9 @@
 {
-    "--bg-color": "#8fd9a8",
+    "--bg-color": "#92AA83",
     "--main-color": "#ffffff",
     "--sub-color": "#186544",
     "--text-color": "#ffffff",
     "--error-color": "rgb(240, 84, 84)",
-    "--caret-color": "rgba(255, 255, 255, 0.5)"
+    "--caret-color": "rgba(255, 255, 255, 0.3)"
   }
   
