@@ -44,7 +44,7 @@ export class Input extends React.Component {
   startTimer() {
     this.setState({
       time: this.state.time,
-      start: Date.now() - this.state.time,
+      start: Date.now(),
     });
     this.timer = setInterval(async () => {
       this.setState({
@@ -74,8 +74,8 @@ export class Input extends React.Component {
 
       if (this.config.get("mode") !== "Time") {
         if (
-          this.state.time >=
-          parseInt(this.config.get("mode").substring(0, 2)) * 1000
+          Date.now() - this.state.start >
+          parseInt(this.state.timeText.split(" / ")[1].substring(0, 2)) * 1000
         ) {
           clearInterval(this.timer);
           await this.handleFinish();
@@ -222,22 +222,23 @@ export class Input extends React.Component {
       let id = randomString();
 
       if (authUser !== null) {
-        await db.collection("stats").add({
-          displayName: authUser.displayName,
-          userUid: authUser.uid,
-          gameId: id,
-          photo: authUser.photoURL,
-          wpm: calculated.wpm,
-          accuracy: calculated.accuracy,
-          text: this.state.fullText,
-          writtenText: this.state.typedText,
-          time: this.state.time,
-          timeStamp: Date.now(),
-        });
+        let userDoc = await db.collection("users").doc(authUser.uid);
+        let doc = await userDoc.get();
 
-        let userDoc = db.collection("users").doc(authUser.uid);
+        if (!doc.data().banned) {
+          await db.collection("stats").add({
+            displayName: authUser.displayName,
+            userUid: authUser.uid,
+            gameId: id,
+            photo: authUser.photoURL,
+            wpm: calculated.wpm,
+            accuracy: calculated.accuracy,
+            text: this.state.fullText,
+            writtenText: this.state.typedText,
+            time: this.state.time,
+            timeStamp: Date.now(),
+          });
 
-        userDoc.get().then((doc) => {
           let userData = doc.data();
           let stats = userData.stats;
           stats.push(id);
@@ -247,7 +248,7 @@ export class Input extends React.Component {
               stats: stats,
             })
             .then(() => this.props.finish(finishState));
-        });
+        }
       } else this.props.finish(finishState);
     });
   }
