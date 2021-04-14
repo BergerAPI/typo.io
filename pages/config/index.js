@@ -1,8 +1,6 @@
 import { Checkbox } from "../../components/config/Checkbox.jsx"
 import { Mode } from "../../components/config/Mode.jsx"
 import MovingLayout from "../../components/layout/Moving-Layout.js"
-import { Config } from "../../util/config";
-
 
 export default function Home() {
   return (
