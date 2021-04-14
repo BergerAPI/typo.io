@@ -3,6 +3,7 @@
     "--main-color": "#ffffff",
     "--sub-color": "#186544",
     "--text-color": "#ffffff",
-    "--error-color": "rgb(240, 84, 84)"
+    "--error-color": "rgb(240, 84, 84)",
+    "--caret-color": "rgba(255, 255, 255, 0.5)"
   }
   

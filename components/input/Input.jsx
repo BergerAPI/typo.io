@@ -312,7 +312,7 @@ export class Input extends React.Component {
       else
         remaining.push(
           <a
-            style={{ "background-color": "rgb(100, 100, 100)" }}
+            style={{ "background-color": "var(--caret-color)" }}
             className={styles.remaining}
           >
             {this.state.remainingText[i]}

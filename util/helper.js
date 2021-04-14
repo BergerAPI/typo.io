@@ -52,10 +52,8 @@ export async function applyTheme(themeData) {
     if (!themeData) return;
     const root = document.documentElement;
 
-    Object.keys(themeData).forEach((property) => {
-        console.log(property + " - " + themeData[property])
-        root.style.setProperty(property, themeData[property])
-    });
+    Object.keys(themeData).forEach((property) =>
+        root.style.setProperty(property, themeData[property]));
 }
 
 /**

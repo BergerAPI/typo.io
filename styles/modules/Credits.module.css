@@ -1,5 +1,5 @@
 .product {
-    color: #f1c40f;
+    color: var(--main-color);
     text-decoration: underline;
 }
 
