@@ -29,7 +29,7 @@ export class Checkbox extends React.Component {
         <div className={styles.box}>
           <p
             className={
-              this.state.activated ? styles.offBox : undefined
+              this.state.activated ? styles.offBox : styles.onBox
             }
             onClick={() => {
               this.setState({ activated: false });
@@ -40,7 +40,7 @@ export class Checkbox extends React.Component {
           </p>
           <p
             className={
-              !this.state.activated ? styles.offBox : undefined
+              !this.state.activated ? styles.offBox : styles.onBox
             }
             onClick={() => {
               this.setState({ activated: true });

@@ -24,7 +24,7 @@ export class Mode extends React.Component {
       return (
         <p
           className={
-            this.state.currentValue !== value ? styles.offBox : undefined
+            this.state.currentValue !== value ? styles.offBox : styles.onBox
           }
           onClick={() => {
             this.setState({ currentValue: value });

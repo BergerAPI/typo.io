@@ -39,3 +39,7 @@
 .offBox {
   color: grey;
 }
+
+.onBox {
+  color: var(--main-color)
+}

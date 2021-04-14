@@ -14,7 +14,7 @@ export default function Home() {
       <Mode title="Language" description="The Language, in which you want to type in" item="language" values={["English", "German", "France", "Russia"]} />
       <Mode title="Font-Size" description="The size of the font" item="fontSize" values={["15px", "20px", "25px", "30px"]} />
       <Mode title="Font" description="The font" item="fontFamily" values={["Arial", "monospace", "Roboto Mono", "Source Code Pro"]} />
-      <Mode title="Theme" description="The theme" item="theme" values={["old-school", "green-tea"]} onSet={async (item) => applyTheme(await getTheme(item))} />
+      <Mode title="Theme" description="The theme" item="theme" values={["old-school", "green-tea", "arch", "sudo"]} onSet={async (item) => applyTheme(await getTheme(item))} />
     </>
   )
 }
