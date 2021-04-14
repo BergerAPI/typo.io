@@ -1,4 +1,5 @@
 import Router from "next/router";
+import { Config } from "../../util/config";
 import { auth, db } from "../../util/firebase/firebase"
 
 export default function Account() {
@@ -7,6 +8,8 @@ export default function Account() {
             if (authUser === null)
                 Router.push('/')
         })
+
+        new Config().loadTheme("..")
     }
 
     return (
@@ -22,7 +25,7 @@ export default function Account() {
                 <button onClick={async () => {
                     let link = document.querySelector("input[name='link']").value
 
-                    if(!link.match(/\.(jpg|gif|png)$/)) {
+                    if (!link.match(/\.(jpg|gif|png)$/)) {
                         alert("link is not an image. Please use file format .jpg, .png, .gif")
                         return
                     }
@@ -51,7 +54,7 @@ export default function Account() {
                     let username = document.querySelector("input[name='username']").value
 
                     await auth.onAuthStateChanged(async (authUser) => {
-                        if (authUser !== null && username.length >= 3 && username.length <= 12 && username.match(/^[a-zA-Z0-9]+$/)) {
+                        if (authUser !== null && username.length >= 3 && username.length <= 12 && username.match(/^[0-9a-zA-Z_.-]+$/)) {
                             await authUser.updateProfile({
                                 displayName: username
                             })
@@ -64,7 +67,7 @@ export default function Account() {
                             });
 
                             db.collection("users").doc(authUser.uid).update({ displayName: username })
-                        }else {
+                        } else {
                             alert("Your username isn't following the name conventions. Your name should only contain letters from a to z in uppercase and lower case and numbers from 0 to 9. Also it should be in the lenght from 3 to 12.")
                         }
                     });

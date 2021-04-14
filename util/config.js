@@ -1,3 +1,5 @@
+import { applyTheme, getTheme } from "./helper"
+
 export class Config {
     constructor() {
         this.currentConfig = new Map()
@@ -52,5 +54,15 @@ export class Config {
         if (localStorage.getItem("config") !== null)
             this.currentConfig = new Map(Object.entries(JSON.parse(localStorage.getItem("config"))))
         else this.save()
+    }
+
+    /**
+     * Loads the current theme
+     */
+    loadTheme(start) {
+        getTheme(this.get("theme"), start ? start : "").then((item) => {
+            console.log(item)
+            applyTheme(item)
+        });
     }
 }

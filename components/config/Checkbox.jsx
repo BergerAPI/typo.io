@@ -12,8 +12,9 @@ export class Checkbox extends React.Component {
     this.config = new Config()
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.config.load()
+    this.config.loadTheme()
     this.setState({ activated: this.config.get(this.props.item) });
   }
 

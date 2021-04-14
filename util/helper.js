@@ -36,9 +36,9 @@ export async function getRandomText(language) {
  * Sends a request to the backend to get a theme
  * @param {string} name 
  */
-export async function getTheme(name) {
+export async function getTheme(name, start) {
     let response = undefined
-    await fetch("api/theme/" + name)
+    await fetch((start ? start + "/" : "") + "api/theme/" + name)
         .then((res) => res.json())
         .then((data) => response = data);
     return response

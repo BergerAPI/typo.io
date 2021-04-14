@@ -1,4 +1,5 @@
 import Router from "next/router";
+import { Config } from "../../util/config";
 import { auth } from "../../util/firebase/firebase"
 
 export default function Login() {
@@ -6,6 +7,9 @@ export default function Login() {
         width: "100%",
         cursor: "pointer"
     }
+
+    if (typeof window !== "undefined")
+        new Config().loadTheme("..")
 
     return (
         <>

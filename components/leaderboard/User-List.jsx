@@ -3,6 +3,7 @@ import MoonLoader from "react-spinners/MoonLoader";
 
 import { User } from "./User.jsx";
 import { db } from "../../util/firebase/firebase.js";
+import { Config } from "../../util/config.js";
 
 export class UserList extends React.Component {
   constructor(props) {
@@ -48,6 +49,8 @@ export class UserList extends React.Component {
     let prevUsers = [];
     let users = [];
     let dailyUsers = [];
+
+    await new Config().loadTheme()
 
     const snapshot = await db.collection("stats").get();
 

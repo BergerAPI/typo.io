@@ -90,6 +90,7 @@ export class Input extends React.Component {
   async setupConfig() {
     let language = this.config.get("language");
 
+    await this.config.loadTheme()
     this.state.unit = this.config.get("unit");
 
     if (this.config.get("mode") !== "Text")

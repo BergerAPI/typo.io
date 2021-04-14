@@ -1,11 +1,15 @@
 import { auth, registerWithGoogle, createDatabaseUser, db } from "../../util/firebase/firebase"
 import Router from "next/router";
+import { Config } from "../../util/config";
 
 export default function Register() {
   const inputCss = {
     width: "100%",
     cursor: "pointer"
   }
+
+  if (typeof window !== "undefined")
+    new Config().loadTheme("..")
 
   return (
     <div style={{
@@ -20,7 +24,7 @@ export default function Register() {
       <button style={inputCss} onClick={async () => {
         let email = document.querySelector("input[name='email']").value
         let password = document.querySelector("input[name='password']").value
-        
+
         await auth.createUserWithEmailAndPassword(email, password)
           .then(async (cred) => createDatabaseUser(cred.user))
           .catch((error) => alert("An error occured: " + error.message));

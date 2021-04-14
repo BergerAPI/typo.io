@@ -15,7 +15,7 @@ export class Mode extends React.Component {
 
   componentDidMount() {
     this.config.load()
-
+    this.config.loadTheme()
     this.setState({ currentValue: this.config.get(this.props.item) });
   }
 
