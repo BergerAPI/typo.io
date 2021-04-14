@@ -77,9 +77,8 @@ export class Input extends React.Component {
           this.state.time >
           parseInt(this.state.timeText.split(" / ")[1].substring(0, 2)) * 1000
         ) {
-          clearInterval(this.timer);
           await this.handleFinish();
-          return;
+          clearInterval(this.timer);
         }
       }
     }, 1);
