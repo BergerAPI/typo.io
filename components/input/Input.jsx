@@ -39,6 +39,8 @@ export class Input extends React.Component {
     this.config = new Config();
   }
 
+  caret = React.createRef();
+
   /**
    * Starts the timer to calculate the wpm for example
    */
@@ -92,6 +94,7 @@ export class Input extends React.Component {
     if (typeof document !== "undefined") {
       let remainingIndex = this.state.index - this.state.typedText.length;
       if (remainingIndex === 0) remainingIndex = 0;
+
       let letterDoc = document.getElementById(remainingIndex);
 
       if (letterDoc) {
@@ -107,9 +110,8 @@ export class Input extends React.Component {
 
         let newTop =
           currentLetterTopOffset +
-          Math.ceil(letterDoc.clientHeight) +
-          caret.style.height / 2;
-
+          Math.ceil(letterDoc.clientHeight);
+      
         anime({
           targets: caret,
           left: newLeft,
@@ -120,7 +122,6 @@ export class Input extends React.Component {
       }
     }
   }
-
   /**
    * Sets all states that are important for the component
    */
@@ -404,7 +405,11 @@ export class Input extends React.Component {
                       fontFamily: this.state.font,
                     }}
                   >
-                    <div className={styles.caret} id="caret" />
+                    <div
+                      className={styles.caret}
+                      style={{ height: parseInt(this.state.fontSize, 10) }}
+                      id="caret"
+                    />
                     {typed}
                     {remaining}
                   </p>
