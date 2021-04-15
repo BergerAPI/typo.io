@@ -86,6 +86,44 @@ export class Input extends React.Component {
   }
 
   /**
+   * Updates the caret
+   */
+  updateCaret() {
+    if (typeof document !== "undefined")
+      if (document.getElementById(this.state.index) !== null) {
+        let remainingIndex = this.state.index - this.state.typedText.length;
+        let caret = document.getElementById("caret");
+
+        if (remainingIndex === 0) remainingIndex = 0;
+
+        let letterDoc = document.getElementById(remainingIndex);
+
+        if (letterDoc) {
+          let currentLetterLeftOffset = letterDoc.offsetLeft;
+          let currentLetterTopOffset = letterDoc.offsetTop;
+
+          let newLeft =
+            currentLetterLeftOffset +
+            Math.ceil(letterDoc.clientWidth) +
+            caret.style.width / 2;
+
+          let newTop =
+            currentLetterTopOffset +
+            Math.ceil(letterDoc.clientHeight) +
+            caret.style.height / 2;
+
+          anime({
+            targets: caret,
+            left: newLeft,
+            top: newTop,
+            duration: 150,
+            easing: "easeOutQuad",
+          });
+        }
+      }
+  }
+
+  /**
    * Sets all states that are important for the component
    */
   async setupConfig() {
@@ -135,6 +173,7 @@ export class Input extends React.Component {
         this.state.typedText.length - 1
       ),
     });
+    this.updateCaret();
   }
 
   /**
@@ -161,40 +200,7 @@ export class Input extends React.Component {
       ),
     });
 
-    if (typeof document !== "undefined")
-      if (document.getElementById(this.state.index) !== null) {
-        let remainingIndex = this.state.index - this.state.typedText.length;
-        let caret = document.getElementById("caret");
-
-        if (remainingIndex === 0) remainingIndex = 0;
-
-        let letterDoc = document.getElementById(remainingIndex);
-
-        if (letterDoc) {
-          console.log(letterDoc);
-
-          let currentLetterLeftOffset = letterDoc.offsetLeft;
-          let currentLetterTopOffset = letterDoc.offsetTop;
-
-          let newLeft =
-            currentLetterLeftOffset +
-            Math.ceil(letterDoc.clientWidth) +
-            caret.style.width / 2;
-
-          let newTop =
-            currentLetterTopOffset +
-            Math.ceil(letterDoc.clientHeight) +
-            caret.style.height / 2;
-
-          anime({
-            targets: caret,
-            left: newLeft,
-            top: newTop,
-            duration: 150,
-            easing: "easeOutQuad",
-          });
-        }
-      }
+    this.updateCaret();
 
     if (this.state.index + 1 > this.state.fullText.length)
       await this.handleFinish();
