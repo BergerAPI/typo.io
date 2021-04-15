@@ -73,7 +73,7 @@ export class Input extends React.Component {
         }
       }
 
-      if (this.config.get("mode") !== "Time") {
+      if (this.config.get("mode") !== "Text") {
         if (
           this.state.time >
           parseInt(this.state.timeText.split(" / ")[1].substring(0, 2)) * 1000
@@ -89,38 +89,36 @@ export class Input extends React.Component {
    * Updates the caret
    */
   updateCaret() {
-    if (typeof document !== "undefined")
-      if (document.getElementById(this.state.index) !== null) {
-        let remainingIndex = this.state.index - this.state.typedText.length;
+    if (typeof document !== "undefined") {
+      let remainingIndex = this.state.index - this.state.typedText.length;
+      if (remainingIndex === 0) remainingIndex = 0;
+      let letterDoc = document.getElementById(remainingIndex);
+
+      if (letterDoc) {
         let caret = document.getElementById("caret");
 
-        if (remainingIndex === 0) remainingIndex = 0;
+        let currentLetterLeftOffset = letterDoc.offsetLeft;
+        let currentLetterTopOffset = letterDoc.offsetTop;
 
-        let letterDoc = document.getElementById(remainingIndex);
+        let newLeft =
+          currentLetterLeftOffset +
+          Math.ceil(letterDoc.clientWidth) +
+          caret.style.width / 2;
 
-        if (letterDoc) {
-          let currentLetterLeftOffset = letterDoc.offsetLeft;
-          let currentLetterTopOffset = letterDoc.offsetTop;
+        let newTop =
+          currentLetterTopOffset +
+          Math.ceil(letterDoc.clientHeight) +
+          caret.style.height / 2;
 
-          let newLeft =
-            currentLetterLeftOffset +
-            Math.ceil(letterDoc.clientWidth) +
-            caret.style.width / 2;
-
-          let newTop =
-            currentLetterTopOffset +
-            Math.ceil(letterDoc.clientHeight) +
-            caret.style.height / 2;
-
-          anime({
-            targets: caret,
-            left: newLeft,
-            top: newTop,
-            duration: 150,
-            easing: "easeOutQuad",
-          });
-        }
+        anime({
+          targets: caret,
+          left: newLeft,
+          top: newTop,
+          duration: 150,
+          easing: "easeOutQuad",
+        });
       }
+    }
   }
 
   /**
@@ -356,8 +354,17 @@ export class Input extends React.Component {
     for (let i = 0; i < this.state.typedText.length; i++) {
       let value = this.state.typedText[i];
       if (value !== this.state.fullText[i])
-        typed.push(<a className={styles.wrong}>{this.state.fullText[i]}</a>);
-      else typed.push(<a className={styles.typed}>{value}</a>);
+        typed.push(
+          <a key={i} className={styles.wrong}>
+            {this.state.fullText[i]}
+          </a>
+        );
+      else
+        typed.push(
+          <a key={i} className={styles.typed}>
+            {value}
+          </a>
+        );
     }
 
     return (
