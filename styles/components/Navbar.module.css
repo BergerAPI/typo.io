@@ -13,7 +13,7 @@
 .navigation .logo {
   display: flex;
   align-items: center;
-  margin-left: 80px;
+  margin-left: 130px;
   font-family: "Roboto Mono";
   color: var(--main-color);
 }
@@ -21,7 +21,7 @@
 .navigation .links {
   display: flex;
   align-items: center;
-  margin-right: 80px;
+  margin-right: 130px;
 }
 
 .navigation .link {

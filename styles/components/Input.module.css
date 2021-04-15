@@ -6,6 +6,13 @@
   color: var(--text-color)
 }
 
+.caret {
+  position: fixed;
+  width: 2px;
+  height: 35px;
+  background-color: var(--caret-color);
+}
+
 .wrong {
   background-color: var(--error-color);
 }

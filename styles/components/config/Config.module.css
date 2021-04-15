@@ -26,6 +26,12 @@
 .box p {
   display: inline;
   padding-left: 6px;
+
+  padding: 0.4rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  align-content: center;
+  height: min-content;
 }
 
 .box p:hover {
@@ -41,5 +47,6 @@
 }
 
 .onBox {
-  color: var(--main-color)
+  /** background-color: var(--sub-color); */
+  color: var(--main-color);
 }

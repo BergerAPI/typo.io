@@ -1,4 +1,5 @@
 import React from "react";
+import anime from "animejs";
 import styles from "../../styles/components/Input.module.css";
 import MoonLoader from "react-spinners/MoonLoader";
 
@@ -160,6 +161,41 @@ export class Input extends React.Component {
       ),
     });
 
+    if (typeof document !== "undefined")
+      if (document.getElementById(this.state.index) !== null) {
+        let remainingIndex = this.state.index - this.state.typedText.length;
+        let caret = document.getElementById("caret");
+
+        if (remainingIndex === 0) remainingIndex = 0;
+
+        let letterDoc = document.getElementById(remainingIndex);
+
+        if (letterDoc) {
+          console.log(letterDoc);
+
+          let currentLetterLeftOffset = letterDoc.offsetLeft;
+          let currentLetterTopOffset = letterDoc.offsetTop;
+
+          let newLeft =
+            currentLetterLeftOffset +
+            Math.ceil(letterDoc.clientWidth) +
+            caret.style.width / 2;
+
+          let newTop =
+            currentLetterTopOffset +
+            Math.ceil(letterDoc.clientHeight) +
+            caret.style.height / 2;
+
+          anime({
+            targets: caret,
+            left: newLeft,
+            top: newTop,
+            duration: 150,
+            easing: "easeOutQuad",
+          });
+        }
+      }
+
     if (this.state.index + 1 > this.state.fullText.length)
       await this.handleFinish();
   }
@@ -304,20 +340,12 @@ export class Input extends React.Component {
     let typed = [];
     let remaining = [];
 
-    for (let i = 0; i < this.state.fullText.length; i++)
-      if (i !== 0)
-        remaining.push(
-          <a className={styles.remaining}>{this.state.remainingText[i]}</a>
-        );
-      else
-        remaining.push(
-          <a
-            style={{ "background-color": "var(--caret-color)" }}
-            className={styles.remaining}
-          >
-            {this.state.remainingText[i]}
-          </a>
-        );
+    for (let i = 0; i < this.state.remainingText.length; i++)
+      remaining.push(
+        <a className={styles.remaining} id={i}>
+          {this.state.remainingText[i]}
+        </a>
+      );
 
     for (let i = 0; i < this.state.typedText.length; i++) {
       let value = this.state.typedText[i];
@@ -363,6 +391,7 @@ export class Input extends React.Component {
                       fontFamily: this.state.font,
                     }}
                   >
+                    <div className={styles.caret} id="caret" />
                     {typed}
                     {remaining}
                   </p>
