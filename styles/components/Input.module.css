@@ -10,7 +10,7 @@
   position: fixed;
   width: 2px;
   height: 35px;
-  background-color: var(--caret-color);
+  background-color: var(--main-color);
 }
 
 .wrong {
