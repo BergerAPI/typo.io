@@ -201,7 +201,7 @@ export class Input extends React.Component {
 
     this.updateCaret();
 
-    if (this.state.index + 1 > this.state.fullText.length)
+    if (this.state.index === this.state.fullText.length)
       await this.handleFinish();
   }
 

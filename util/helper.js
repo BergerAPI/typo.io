@@ -74,11 +74,10 @@ export function randomString(length = 64) {
 
 /**
  * Packages a array into parts
- * @param {strign} text 
+ * @param {array} words 
  * @param {number} count 
  */
-export function packageArray(text, count) {
-    const words = text.split(" ");
+export function packageArray(words, count) {
     const nineLength = Math.round(words.length / count);
     const lines = [];
     const last = [];
