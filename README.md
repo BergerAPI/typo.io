@@ -1,4 +1,6 @@
-<h1 align="center">Typo.io</h1>
+<h1 align="center">
+<img src="/public/logo/title.png" />
+</h1>
 
 <p align="center">This is a simple type education app made for learning some Next.js and React.js</p>
 
