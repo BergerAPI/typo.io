@@ -1,6 +1,5 @@
 import React from "react";
 import MoonLoader from "react-spinners/MoonLoader";
-
 import { User } from "./User.jsx";
 import { db } from "../../util/firebase/firebase.js";
 import { Config } from "../../util/config.js";
@@ -16,12 +15,7 @@ export class UserList extends React.Component {
   }
 
   statisticToHtml(item) {
-    var sec = Math.round(((Date.now() - item.timeStamp) / 1000) * 1) / 1;
-    var mind = sec % (60 * 60);
-    var minutes = Math.floor(mind / 60);
-
-    var secd = mind % 60;
-    var seconds = Math.ceil(secd);
+    let date = new Date(item.timeStamp);
 
     return (
       <User
@@ -31,13 +25,8 @@ export class UserList extends React.Component {
           item.wpm +
           " Accuracy: " +
           item.accuracy +
-          "% Time: " +
-          Math.round((item.time / 1000) * 1) / 1 +
-          "s, " +
-          minutes +
-          "m " +
-          seconds +
-          "s ago"
+          "% Date: " +
+          date.toLocaleString("en-GB").replace(",", "").replaceAll("/", ".")
         }
         photo={item.photo}
         badges={[]}
@@ -50,7 +39,7 @@ export class UserList extends React.Component {
     let users = [];
     let dailyUsers = [];
 
-    await new Config().loadTheme()
+    await new Config().loadTheme();
 
     const snapshot = await db.collection("stats").get();
 
@@ -106,7 +95,7 @@ export class UserList extends React.Component {
       justifyContent: "center",
       "font-family": "monospace",
       fontSize: "200%",
-      color: "var(--text-color)"
+      color: "var(--text-color)",
     };
 
     if (this.state.users.length === 0)

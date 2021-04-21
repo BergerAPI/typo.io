@@ -21,8 +21,6 @@ export class Input extends React.Component {
       fullText: this.props.text,
       author: this.props.author,
       errorCount: 0,
-      validLetters:
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZöüäß.?!;-:,'\" ",
       time: 0.0,
       start: 0.0,
       words: this.props.text.split(" "),
@@ -108,10 +106,8 @@ export class Input extends React.Component {
           Math.ceil(letterDoc.clientWidth) +
           caret.style.width / 2;
 
-        let newTop =
-          currentLetterTopOffset +
-          Math.ceil(letterDoc.clientHeight);
-      
+        let newTop = currentLetterTopOffset + Math.ceil(letterDoc.clientHeight);
+
         anime({
           targets: caret,
           left: newLeft,
@@ -299,6 +295,9 @@ export class Input extends React.Component {
    * @see https://reactjs.org/docs/react-component.html
    */
   async componentDidMount() {
+    let letters =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZöüäß.?!;’-:,'\"АаБбВвГгДдЕеЁёЖжЗзІіЙйКкЛлМмНнОоПпРрСсТтУуЎўФфХхЦцЧчШшЫыЬьЭэЮюЯя ";
+
     initSounds();
 
     // Im basically using the "normal" javascript way to detect
@@ -307,8 +306,7 @@ export class Input extends React.Component {
     document.addEventListener(
       "keydown",
       async (event) => {
-        if (this.state.validLetters.includes(event.key))
-          this.handleValidInput(event);
+        if (letters.includes(event.key)) this.handleValidInput(event);
         else if (event.keyCode == 8 && this.state.index > 0)
           this.handleBackspace();
         else if (event.keyCode == 13 && this.state.restartSelected)

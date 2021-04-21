@@ -14,8 +14,6 @@ export class Mode extends React.Component {
   }
 
   componentDidMount() {
-    this.config.load()
-    this.config.loadTheme()
     this.setState({ currentValue: this.config.get(this.props.item) });
   }
 
@@ -24,11 +22,11 @@ export class Mode extends React.Component {
       return (
         <p
           className={
-            this.state.currentValue !== value ? styles.offBox : styles.onBox
+            this.state.currentValue.toLowerCase() !== value.toLowerCase() ? styles.offBox : styles.onBox
           }
           onClick={() => {
             this.setState({ currentValue: value });
-            this.config.set(this.props.item, value);
+            this.config.set(this.props.item, value.toLowerCase());
 
             if(this.props.onSet)
               this.props.onSet(value)
