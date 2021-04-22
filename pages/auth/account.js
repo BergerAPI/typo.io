@@ -5,6 +5,8 @@ import { auth, db } from "../../util/firebase/firebase"
 
 export default function Account() {
     let [games, setGames] = useState([])
+    let [account, setAccount] = useState()
+    let [accountUid, setAccountUid] = useState()
 
     if (typeof window !== 'undefined') {
         auth.onAuthStateChanged(async (authUser) => {
@@ -26,8 +28,11 @@ export default function Account() {
             temp.sort((a, b) => {
                 return -a.wpm - -b.wpm
             })
-            if (games.length <= 0)
+            if (!account) {
                 setGames(temp)
+                setAccount(dbAccount)
+                setAccountUid(authUser.uid)
+            }
         })
 
         new Config().loadTheme("..")
@@ -40,6 +45,24 @@ export default function Account() {
                     Router.push("/")
                 })
             }} type="submit">Logout</button>
+
+            <button onClick={async () => {
+                let collection = await db.collection("stats")
+
+                console.log(account)
+
+                await (await collection.get()).docs.map(async (doc) => {
+                    let data = doc.data()
+
+                    if (account.stats.includes(data.gameId)) {
+                        await doc.ref.delete().then(() => {
+                            console.log("deleted game with: " + data.wpm + " and game id: " + data.gameId)
+                        })
+                    }
+                });
+
+                await db.collection("users").doc(accountUid).update({ stats: [] })
+            }} type="submit">Reset Stats</button>
 
             <div>
                 <input type="text" name="link" placeholder="Link" />
