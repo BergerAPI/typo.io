@@ -1,12 +1,33 @@
 import Router from "next/router";
+import { useState } from "react";
 import { Config } from "../../util/config";
 import { auth, db } from "../../util/firebase/firebase"
 
 export default function Account() {
+    let [games, setGames] = useState([])
+
     if (typeof window !== 'undefined') {
-        auth.onAuthStateChanged((authUser) => {
-            if (authUser === null)
+        auth.onAuthStateChanged(async (authUser) => {
+            if (authUser === null) {
                 Router.push('/')
+                return
+            }
+
+            let dbAccount = await (await db.collection("users").doc(authUser.uid).get()).data()
+            let temp = []
+
+            await (await db.collection("stats").get()).docs.map((doc) => {
+                let data = doc.data()
+
+                if (dbAccount.stats.includes(data.gameId))
+                    temp.push(data)
+            });
+
+            temp.sort((a, b) => {
+                return -a.wpm - -b.wpm
+            })
+            if (games.length <= 0)
+                setGames(temp)
         })
 
         new Config().loadTheme("..")
@@ -72,6 +93,10 @@ export default function Account() {
                         }
                     });
                 }} type="submit">Save</button>
+            </div>
+            <div>
+                <p>Played Games: {games.length}</p>
+                <p>Highest WPM: {games[0] ? games[0].wpm : "nothing found"}</p>
             </div>
         </>
     )
