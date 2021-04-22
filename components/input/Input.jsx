@@ -75,7 +75,7 @@ export class Input extends React.Component {
 
       if (this.config.get("mode") !== "Text") {
         if (
-          this.state.time >
+          Date.now() - this.state.start >
           parseInt(this.state.timeText.split(" / ")[1].substring(0, 2)) * 1000
         ) {
           await this.handleFinish();
