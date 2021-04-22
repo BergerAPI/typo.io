@@ -241,6 +241,12 @@ export class Input extends React.Component {
       this.state.words
     );
 
+    if (
+      calculated.wpm.toString() === "Infinity" ||
+      !Number.isInFinite(calculated.wpm)
+    )
+      return;
+
     this.state.wpmData.push(calculated.wpm);
     this.state.rawData.push(calculated.raw);
 
