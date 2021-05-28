@@ -11,7 +11,7 @@
      */
     function updateCaret(animation = true) {
         const currentLetter = document.getElementById(
-            writtenText.length != 0 ? writtenText.length - 1 : 0
+            (writtenText.length !== 0 ? writtenText.length - 1 : 0).toString()
         );
         const caret = document.getElementById("caret");
 
@@ -44,9 +44,9 @@
         if (invalid.includes(event.keyCode)) return;
 
         // Checks if the game is finished
-        if (writtenText.length >= text.length) {
+        if (writtenText.length >= text.length && event.key !== "Backspace")
             return;
-        }
+
 
         // Removes a letter and makes the normal letter white again
         if (event.key === "Backspace") {
@@ -56,7 +56,7 @@
             element.style.color = "white";
             element.style.textDecoration = "";
         } else {
-            const condition = text[ writtenText.length] === event.key;
+            const condition = text[writtenText.length] === event.key;
             const element = document.getElementById(writtenText.length.toString());
 
             console.log(element)
@@ -66,7 +66,6 @@
 
             if (!condition) element.style.textDecoration = "underline";
         }
-
         updateCaret();
     }
 
@@ -93,9 +92,9 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-
         color: white;
-        font-family: "Source Code Pro";
+        font-family: "Source Code Pro", serif;
+        user-select: none;
     }
 
     #caret {
