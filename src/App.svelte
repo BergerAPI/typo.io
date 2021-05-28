@@ -13,7 +13,7 @@
         {
             iconPath: "public/ico/user.svg",
             object: User,
-            path: "/"
+            path: "/user"
         },
     ]
 
