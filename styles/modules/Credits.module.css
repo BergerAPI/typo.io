@@ -1,8 +1,0 @@
-.product {
-    color: var(--main-color);
-    text-decoration: underline;
-}
-
-.product:hover {
-    cursor: pointer;
-}

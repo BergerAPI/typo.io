@@ -1,8 +1,0 @@
-{
-  "--bg-color": "#272932",
-  "--main-color": "#FFB627",
-  "--sub-color": "#C6B9CD",
-  "--text-color": "#ffffff",
-  "--error-color": "rgb(240, 84, 84)",
-  "--caret-color": "rgba(255, 255, 255, 0.1)"
-}
