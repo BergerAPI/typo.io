@@ -3,15 +3,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
 
 :root {
-  --element-color: #191919;
-  --bg-color: #111;
+    --element-color: #191919;
+    --bg-color: #111;
+}
+
+* {
+    padding: 0;
+    margin: 0;
 }
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: var(--bg-color);
+    background-color: var(--bg-color);
 }
