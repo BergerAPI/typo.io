@@ -29,10 +29,6 @@
         justify-content: space-around;
     }
 
-    .route{
-
-    }
-
     #logo {
         margin-right: 10px;
         color: dodgerblue;
