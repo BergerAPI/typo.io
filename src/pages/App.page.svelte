@@ -4,7 +4,7 @@
 
   let text = "Cheesemans cheese is cheese from cheeseman";
   let writtenText = "";
-  var invalid = [16, 91, 18, 9, 20, 38, 37, 39, 40];
+  let invalid = [16, 91, 18, 9, 20, 38, 37, 39, 40];
 
   /**
    * Sets the new position fot he caret with an nice animation
