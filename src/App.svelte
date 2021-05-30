@@ -1,6 +1,6 @@
 <script>
   import Router from "svelte-spa-router";
-  import Nav from "./components/Nav.component.svelte";
+  import Nav from "./components/Navigation.svelte";
   import App from "./pages/App.page.svelte";
   import User from "./pages/User.page.svelte";
 

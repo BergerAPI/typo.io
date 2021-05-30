@@ -73,7 +73,7 @@
       const element = document.getElementById(writtenText.length.toString());
 
       writtenText += event.key;
-      element.style.color = condition ? "#77dd77" : "red";
+      element.style.color = condition ? "#f0c929" : "#f48b29";
 
       if (!condition) element.style.textDecoration = "underline";
     }
